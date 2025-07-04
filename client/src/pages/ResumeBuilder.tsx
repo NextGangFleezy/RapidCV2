@@ -84,9 +84,9 @@ export default function ResumeBuilder() {
       };
 
       if (id) {
-        return apiRequest(`/api/resumes/${id}`, 'PUT', payload);
+        return apiRequest('PUT', `/api/resumes/${id}`, payload);
       } else {
-        return apiRequest('/api/resumes', 'POST', payload);
+        return apiRequest('POST', '/api/resumes', payload);
       }
     },
     onSuccess: async (response) => {
