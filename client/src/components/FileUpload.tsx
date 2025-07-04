@@ -20,44 +20,44 @@ export default function FileUpload({ onFileProcessed, onError }: FileUploadProps
   const { toast } = useToast();
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
-    const file = acceptedFiles[0];
-    if (!file) return;
-
-    // Validate file type
-    const allowedTypes = [
-      'application/pdf',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      'application/msword'
-    ];
-
-    if (!allowedTypes.includes(file.type)) {
-      const errorMsg = 'Invalid file type. Please upload a PDF or DOCX file.';
-      toast({
-        title: 'Upload Error',
-        description: errorMsg,
-        variant: 'destructive'
-      });
-      onError?.(errorMsg);
-      return;
-    }
-
-    // Validate file size (10MB limit)
-    if (file.size > 10 * 1024 * 1024) {
-      const errorMsg = 'File size exceeds 10MB limit.';
-      toast({
-        title: 'Upload Error',
-        description: errorMsg,
-        variant: 'destructive'
-      });
-      onError?.(errorMsg);
-      return;
-    }
-
-    setUploadedFile(file);
-    setUploading(true);
-    setProgress(0);
-
     try {
+      const file = acceptedFiles[0];
+      if (!file) return;
+
+      // Validate file type
+      const allowedTypes = [
+        'application/pdf',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'application/msword'
+      ];
+
+      if (!allowedTypes.includes(file.type)) {
+        const errorMsg = 'Invalid file type. Please upload a PDF or DOCX file.';
+        toast({
+          title: 'Upload Error',
+          description: errorMsg,
+          variant: 'destructive'
+        });
+        onError?.(errorMsg);
+        return;
+      }
+
+      // Validate file size (10MB limit)
+      if (file.size > 10 * 1024 * 1024) {
+        const errorMsg = 'File size exceeds 10MB limit.';
+        toast({
+          title: 'Upload Error',
+          description: errorMsg,
+          variant: 'destructive'
+        });
+        onError?.(errorMsg);
+        return;
+      }
+
+      setUploadedFile(file);
+      setUploading(true);
+      setProgress(0);
+
       const formData = new FormData();
       formData.append('file', file);
 
@@ -66,7 +66,7 @@ export default function FileUpload({ onFileProcessed, onError }: FileUploadProps
         setProgress(prev => Math.min(prev + 10, 80));
       }, 200);
 
-      const response = await apiRequest('/api/upload-resume', {
+      const response = await fetch('/api/upload-resume', {
         method: 'POST',
         body: formData,
       });
@@ -84,8 +84,20 @@ export default function FileUpload({ onFileProcessed, onError }: FileUploadProps
 
         onFileProcessed(result);
       } else {
-        const error = await response.text();
-        throw new Error(error || 'Upload failed');
+        // Parse error response properly
+        let errorMessage = 'Upload failed';
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.error || errorData.message || errorMessage;
+        } catch {
+          // If JSON parsing fails, try text
+          try {
+            errorMessage = await response.text() || errorMessage;
+          } catch {
+            // Keep default message if both fail
+          }
+        }
+        throw new Error(errorMessage);
       }
     } catch (error) {
       const errorMsg = error instanceof Error ? error.message : 'Failed to process file';

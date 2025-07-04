@@ -1,4 +1,9 @@
-import express from 'express';
+import express, { Request } from 'express';
+
+// Extend Request type for multer
+interface RequestWithFile extends Request {
+  file?: any; // Multer file type
+}
 import { z } from 'zod';
 import { storage } from './storage';
 import { 
@@ -96,12 +101,35 @@ router.delete('/api/resumes/:id', async (req, res) => {
 });
 
 // Upload and parse resume file
-router.post('/api/upload-resume', upload.single('file'), async (req, res) => {
+router.post('/api/upload-resume', upload.single('file'), async (req: RequestWithFile, res) => {
   try {
+    // Validate file upload
     validateFileUpload(req.file);
     
+    // Extract text from file
     const uploadedFile = await extractTextFromFile(req.file!);
-    const parsedData = await parseResumeContent(uploadedFile.content);
+    
+    // Try to parse with AI, but don't fail if AI is unavailable
+    let parsedData = null;
+    try {
+      parsedData = await parseResumeContent(uploadedFile.content);
+    } catch (aiError) {
+      console.warn('AI parsing failed, returning raw text:', aiError);
+      // Return basic structure with raw content if AI fails
+      parsedData = {
+        personalInfo: {
+          fullName: '',
+          email: '',
+          phone: '',
+          location: ''
+        },
+        summary: uploadedFile.content.substring(0, 200) + '...',
+        skills: [],
+        workExperience: [],
+        education: [],
+        projects: []
+      };
+    }
     
     res.json({
       fileInfo: {
@@ -109,11 +137,14 @@ router.post('/api/upload-resume', upload.single('file'), async (req, res) => {
         size: uploadedFile.size,
         type: uploadedFile.mimeType
       },
-      parsedData
+      parsedData,
+      rawContent: uploadedFile.content
     });
+    
   } catch (error) {
     console.error('File upload error:', error);
-    res.status(400).json({ error: error.message });
+    const message = error instanceof Error ? error.message : 'Unknown error occurred';
+    res.status(400).json({ error: message });
   }
 });
 
@@ -164,7 +195,8 @@ router.post('/api/analyze-job', async (req, res) => {
       return res.status(400).json({ error: 'Validation error', details: error.errors });
     }
     console.error('Job analysis error:', error);
-    res.status(500).json({ error: error.message });
+    const message = error instanceof Error ? error.message : 'Unknown error occurred';
+    res.status(500).json({ error: message });
   }
 });
 

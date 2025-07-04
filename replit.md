@@ -96,6 +96,7 @@ Changelog:
 - July 04, 2025. Server successfully running with all core features
 - July 04, 2025. Fixed wouter routing integration and Vite HMR functionality
 - July 04, 2025. Frontend now properly served and React application loading correctly
+- July 04, 2025. Fixed file upload crash issue with improved error handling and AI parsing fallbacks
 
 ## User Preferences
 

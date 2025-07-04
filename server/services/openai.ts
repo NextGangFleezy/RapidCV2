@@ -11,8 +11,14 @@ When copying code from this code snippet, ensure you also include this informati
 const DEFAULT_MODEL_STR = "claude-sonnet-4-20250514";
 // </important_do_not_delete>
 
+// Check if API key is available
+const apiKey = process.env.ANTHROPIC_API_KEY;
+if (!apiKey) {
+  console.warn('ANTHROPIC_API_KEY not found in environment variables');
+}
+
 const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY || "default_key",
+  apiKey: apiKey || "dummy_key",
 });
 
 export async function analyzeJobDescription(
@@ -90,6 +96,10 @@ Focus on ATS optimization, keyword matching, and actionable improvements.
 
 export async function parseResumeContent(content: string): Promise<Partial<ResumeData>> {
   try {
+    // Check if API key is available
+    if (!apiKey) {
+      throw new Error('Anthropic API key not configured');
+    }
     const prompt = `
 Parse the following resume content and extract structured information.
 
