@@ -48,7 +48,6 @@ export default function ResumeBuilder() {
   // Load existing resume data
   useEffect(() => {
     if (existingResume && !isLoading) {
-      console.log('Loading existing resume:', existingResume);
       setResumeData({
         personalInfo: existingResume.personalInfo || {
           fullName: '',
@@ -125,9 +124,6 @@ export default function ResumeBuilder() {
   const handleFileProcessed = (result: FileUploadResult) => {
     const { parsedData } = result;
     
-    console.log('Parsed data from upload:', parsedData);
-    console.log('Current resume data before merge:', resumeData);
-    
     // Merge parsed data with current resume data
     const newResumeData = {
       ...resumeData,
@@ -144,7 +140,6 @@ export default function ResumeBuilder() {
       projects: parsedData.projects || resumeData.projects,
     };
     
-    console.log('New merged resume data:', newResumeData);
     setResumeData(newResumeData);
 
     toast({

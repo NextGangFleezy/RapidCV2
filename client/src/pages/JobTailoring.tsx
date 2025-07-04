@@ -30,7 +30,7 @@ export default function JobTailoring() {
 
   // Fetch resume data
   const { data: resume, isLoading } = useQuery<Resume>({
-    queryKey: ['/api/resumes', id],
+    queryKey: [`/api/resumes/${id}`],
     enabled: !!id,
   });
 
@@ -39,10 +39,7 @@ export default function JobTailoring() {
     mutationFn: async ({ jobDescription, resumeId }: { jobDescription: string; resumeId: string }) => {
       setIsAnalyzing(true);
       
-      const response = await apiRequest('/api/analyze-job', {
-        method: 'POST',
-        body: JSON.stringify({ jobDescription, resumeId }),
-      });
+      const response = await apiRequest('POST', '/api/analyze-job', { jobDescription, resumeId });
 
       if (!response.ok) {
         throw new Error('Failed to analyze job description');

@@ -102,6 +102,7 @@ Changelog:
 - July 04, 2025. Fixed Claude JSON parsing errors by cleaning markdown formatting
 - July 04, 2025. Resolved React infinite update loop in ResumeForm component
 - July 04, 2025. Fixed auto-save functionality after file upload to ensure resume data is properly stored before job tailoring
+- July 04, 2025. Fixed query structure in JobTailoring component to properly fetch single resume data and resolve undefined access errors
 
 ## User Preferences
 
