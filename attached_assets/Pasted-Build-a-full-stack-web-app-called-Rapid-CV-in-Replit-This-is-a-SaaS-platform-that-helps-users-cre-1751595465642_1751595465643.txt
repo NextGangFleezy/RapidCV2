@@ -1,0 +1,52 @@
+Build a full-stack web app called "Rapid CV" in Replit. This is a SaaS platform that helps users create and optimize resumes tailored for specific job applications using AI.
+
+🌐 Frontend (React + Tailwind CSS):
+- Pages:
+  • Landing Page
+  • Resume Builder Page (editable form + live preview)
+  • Job Tailoring Page (upload or paste job description, match skills, rewrite resume)
+  • PDF Export Page
+  • Contact/Feedback Page
+
+- Features:
+  • Resume Editing Form: Name, Summary, Work Experience, Education, Skills, Projects
+  • Add/remove sections dynamically
+  • Live Preview Panel
+  • Resume Templates (choose from 2–3 layouts)
+  • PDF Export with one click
+  • "Tailor to Job" button that opens JD Matching modal
+
+🧠 Backend (Node.js + Express):
+- Endpoints:
+  • POST /analyze-jd: Accepts job description + resume JSON, returns transferable skills + tailored resume
+  • POST /export-pdf: Converts resume HTML to PDF
+  • POST /save-resume: (MVP - in memory, DB ready)
+
+- JD Analysis Logic:
+  • Use OpenAI API (GPT-4 or 3.5-turbo) to:
+    - Parse the job description
+    - Extract key responsibilities + required skills
+    - Match them to the user’s resume
+    - Reword and enhance resume bullets to better fit the job description
+    - Return a new tailored version of the resume for editing or download
+
+📦 File Structure:
+- /client → React frontend (pages, components, styles)
+- /server → Express backend (routes, OpenAI API calls, PDF gen)
+- /shared → Models, Resume schemas
+
+✨ Smart Features:
+- Skill Matching Highlight: Show which skills were detected in both resume and job description
+- “Improve Summary” GPT feature: Rewrites the summary based on matched JD
+- Pre-written bullet suggestions for each section
+- "ATS Check": Show whether resume includes enough relevant keywords (optional phase 2)
+
+🔐 Security & Infra:
+- CORS enabled
+- OpenAI API key in .env
+- Add basic error handling and request validation
+- Frontend deployed to Vercel, backend hosted on Replit or Railway
+
+🎯 MVP Goal:
+"Create. Match. Tailor. Download. Land the job."
+
