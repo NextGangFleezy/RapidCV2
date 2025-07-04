@@ -190,7 +190,7 @@ export default function JobTailoring() {
         <Alert className="mb-6">
           <CheckCircle className="h-4 w-4" />
           <AlertDescription>
-            <strong>Content Preservation Guarantee:</strong> Your original resume content is never deleted or removed. Our AI only enhances and reframes your existing accomplishments to better match job requirements. All your bullet points, job descriptions, and achievements remain intact with improved keyword optimization and transferable skills emphasis.
+            <strong>Zero Content Removal Policy:</strong> No information is ever omitted or deleted to improve match scores. Our AI only adds relevant keywords and expands your existing accomplishments with transferable skills emphasis. Every original bullet point, achievement, and job description is preserved and enhanced - never shortened or removed.
           </AlertDescription>
         </Alert>
 

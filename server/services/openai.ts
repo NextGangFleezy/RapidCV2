@@ -43,14 +43,16 @@ ${exp.description.map((bullet, bulletIdx) => `${bulletIdx + 1}. ${bullet}`).join
 
 TOTAL BULLET POINTS TO OPTIMIZE: ${resumeData.workExperience.reduce((total, exp) => total + exp.description.length, 0)}
 
-CRITICAL OPTIMIZATION GUIDELINES:
-- NEVER remove or delete any existing content from the resume
-- PRESERVE ALL original job descriptions, bullet points, and accomplishments 
-- ONLY enhance and reframe existing content to emphasize transferable skills
-- ADD relevant keywords and industry terminology while keeping original meaning
-- AMPLIFY existing achievements by highlighting their relevance to the target role
-- MAINTAIN the exact same number of bullet points for each job
-- KEEP all original dates, company names, and position titles unchanged
+CRITICAL OPTIMIZATION GUIDELINES - ZERO CONTENT REMOVAL:
+- NEVER omit, remove, delete, or shorten any existing content from the resume
+- PRESERVE ALL original job descriptions, bullet points, and accomplishments completely
+- DO NOT sacrifice any information to improve match scores - only ADD and enhance
+- KEEP every single word of original content while adding relevant keywords
+- ENHANCE each bullet point by expanding it with transferable skills emphasis
+- MAINTAIN or INCREASE the length of each description - never make them shorter
+- ADD industry-specific terminology and relevant keywords to existing content
+- AMPLIFY achievements by adding context about their relevance to the target role
+- KEEP all original dates, company names, position titles, and achievements unchanged
 
 Please analyze and provide a JSON response with the following structure:
 {
@@ -61,11 +63,15 @@ Please analyze and provide a JSON response with the following structure:
   "optimizedMatchScore": number between 0-100 representing predicted match score after optimization,
   "suggestions": ["array of specific suggestions to amplify transferable skills and enhance existing qualifications"],
   "enhancedSummary": "rewritten professional summary emphasizing transferable skills relevant to this job",
-  "optimizedBullets": ["array of ALL original bullet points enhanced with relevant keywords and transferable skills emphasis - must contain exact same number of bullets as original resume"],
+  "optimizedBullets": ["array containing ALL original bullet points with ADDITIONS of relevant keywords, transferable skills emphasis, and industry terminology - each bullet should be enhanced/expanded, never shortened or omitted"],
   "improvementAreas": ["array of specific existing skills/experiences that should be emphasized more"]
 }
 
-Focus on ATS optimization, keyword matching, and actionable improvements.
+EXAMPLE OF PROPER ENHANCEMENT (DO NOT REMOVE CONTENT):
+Original: "Managed customer accounts and resolved issues"
+Enhanced: "Managed customer accounts and resolved issues, demonstrating strong analytical skills and regulatory compliance expertise while maintaining 98% customer satisfaction through effective communication and problem-solving"
+
+Focus on ATS optimization, keyword matching, and actionable improvements through ADDITION and EXPANSION only.
 
 IMPORTANT: Return ONLY the JSON object with no explanations, markdown formatting, or additional text.
 `;
