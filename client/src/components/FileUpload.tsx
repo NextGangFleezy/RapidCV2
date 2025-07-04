@@ -90,12 +90,20 @@ export default function FileUpload({ onFileProcessed, onError }: FileUploadProps
       if (response.ok) {
         const result: FileUploadResult = await response.json();
         
+        console.log('Upload response received:', result);
+        
         toast({
           title: 'Upload Successful',
           description: `Successfully extracted content from ${file.name}`,
         });
 
-        onFileProcessed(result);
+        // Ensure onFileProcessed is wrapped in try-catch to handle any errors
+        try {
+          onFileProcessed(result);
+        } catch (callbackError) {
+          console.error('Error in onFileProcessed callback:', callbackError);
+          throw new Error('Failed to process uploaded file data');
+        }
       } else {
         // Parse error response properly
         let errorMessage = 'Upload failed';
