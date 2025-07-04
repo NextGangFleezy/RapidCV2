@@ -49,16 +49,29 @@ export async function extractTextFromFile(file: Express.Multer.File): Promise<Up
       file.mimetype === 'application/msword'
     ) {
       console.log('Processing Word document...');
-      const result = await mammoth.extractRawText({ buffer: file.buffer });
-      extractedText = result.value;
+      // Use convertToHtml to preserve more structure, then clean it
+      const result = await mammoth.convertToHtml({ buffer: file.buffer });
+      // Strip HTML tags but preserve line breaks
+      extractedText = result.value
+        .replace(/<br\s*\/?>/gi, '\n')
+        .replace(/<\/p>/gi, '\n')
+        .replace(/<[^>]*>/g, ' ')
+        .replace(/&nbsp;/g, ' ')
+        .replace(/&amp;/g, '&')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>');
     } else {
       throw new Error(`Unsupported file type: ${file.mimetype}`);
     }
 
-    // Clean up the extracted text
+    // Clean up the extracted text while preserving structure
     const cleanText = extractedText
-      .replace(/\s+/g, ' ') // Replace multiple whitespace with single space
-      .replace(/\n\s*\n/g, '\n') // Remove empty lines
+      .replace(/\r\n/g, '\n') // Normalize line endings
+      .replace(/\r/g, '\n') // Handle old Mac line endings
+      .replace(/[ \t]+/g, ' ') // Replace multiple spaces/tabs with single space
+      .replace(/\n[ \t]+/g, '\n') // Remove leading whitespace from lines
+      .replace(/[ \t]+\n/g, '\n') // Remove trailing whitespace from lines
+      .replace(/\n{3,}/g, '\n\n') // Replace excessive line breaks with double breaks
       .trim();
 
     if (cleanText.length < 50) {

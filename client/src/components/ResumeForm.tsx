@@ -74,8 +74,31 @@ export default function ResumeForm({ data, onChange, onSave }: ResumeFormProps) 
   const watchedValues = form.watch();
 
   useEffect(() => {
+    if (data) {
+      form.reset({
+        personalInfo: {
+          fullName: '',
+          email: '',
+          phone: '',
+          location: '',
+          website: '',
+          linkedin: '',
+          github: '',
+        },
+        summary: '',
+        workExperience: [],
+        education: [],
+        skills: [],
+        projects: [],
+        template: 'modern',
+        ...data,
+      });
+    }
+  }, [data, form]);
+
+  useEffect(() => {
     onChange(watchedValues);
-  }, [watchedValues, onChange]);
+  }, [JSON.stringify(watchedValues), onChange]);
 
   const addExperience = () => {
     appendExperience({

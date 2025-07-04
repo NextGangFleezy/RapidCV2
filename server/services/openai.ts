@@ -154,7 +154,7 @@ Please extract and structure the information into JSON format:
   ]
 }
 
-Extract all available information. If a field is not found, omit it or use empty arrays/strings as appropriate.
+IMPORTANT: Return ONLY the JSON object with no explanations, markdown formatting, or additional text. If a field is not found, omit it or use empty arrays/strings as appropriate. Ensure all dates are in MM/YYYY format.
 `;
 
     const response = await anthropic.messages.create({
@@ -162,11 +162,20 @@ Extract all available information. If a field is not found, omit it or use empty
       messages: [{ role: 'user', content: prompt }],
       // "claude-sonnet-4-20250514"
       model: DEFAULT_MODEL_STR,
-      system: "You are an expert at parsing and structuring resume data. Extract information accurately and comprehensively."
+      system: "You are an expert at parsing and structuring resume data. Return ONLY valid JSON without any markdown formatting, comments, or explanations. Extract information accurately and comprehensively."
     });
 
     const textContent = response.content.find(block => block.type === 'text');
-    const parsed = JSON.parse((textContent as any)?.text || '{}');
+    let jsonText = (textContent as any)?.text || '{}';
+    
+    console.log('Raw Claude response:', jsonText.substring(0, 200) + '...');
+    
+    // Clean up any markdown formatting that Claude might add
+    jsonText = jsonText.replace(/```json\s*/g, '').replace(/```\s*$/g, '').trim();
+    
+    console.log('Cleaned JSON text:', jsonText.substring(0, 200) + '...');
+    
+    const parsed = JSON.parse(jsonText);
     
     // Add IDs to arrays that need them
     if (parsed.workExperience) {
