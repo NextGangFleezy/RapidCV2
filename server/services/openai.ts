@@ -52,6 +52,8 @@ Please analyze and provide a JSON response with the following structure:
 }
 
 Focus on ATS optimization, keyword matching, and actionable improvements.
+
+IMPORTANT: Return ONLY the JSON object with no explanations, markdown formatting, or additional text.
 `;
 
     const response = await anthropic.messages.create({
@@ -59,11 +61,20 @@ Focus on ATS optimization, keyword matching, and actionable improvements.
       messages: [{ role: 'user', content: prompt }],
       // "claude-sonnet-4-20250514"
       model: DEFAULT_MODEL_STR,
-      system: "You are an expert resume optimizer and career counselor. Provide detailed, actionable feedback in the requested JSON format."
+      system: "You are an expert resume optimizer and career counselor. Return ONLY valid JSON without any markdown formatting, comments, or explanations. Provide detailed, actionable feedback in the requested JSON format."
     });
 
     const textContent = response.content.find(block => block.type === 'text');
-    const result = JSON.parse((textContent as any)?.text || '{}');
+    let jsonText = (textContent as any)?.text || '{}';
+    
+    console.log('Raw Claude analysis response:', jsonText.substring(0, 200) + '...');
+    
+    // Clean up any markdown formatting that Claude might add
+    jsonText = jsonText.replace(/```json\s*/g, '').replace(/```\s*$/g, '').trim();
+    
+    console.log('Cleaned analysis JSON text:', jsonText.substring(0, 200) + '...');
+    
+    const result = JSON.parse(jsonText);
 
     // Create optimized experience entries
     const optimizedExperience: WorkExperience[] = resumeData.workExperience.map((exp, index) => {
