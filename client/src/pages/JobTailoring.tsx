@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'wouter';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
@@ -186,6 +186,14 @@ export default function JobTailoring() {
           <Separator />
         </div>
 
+        {/* Information Banner */}
+        <Alert className="mb-6">
+          <CheckCircle className="h-4 w-4" />
+          <AlertDescription>
+            <strong>Preserving Your Resume Integrity:</strong> Our AI amplifies your existing skills and experience to match job requirements without fabricating new qualifications. Your original accomplishments remain authentic while being presented in the most relevant way.
+          </AlertDescription>
+        </Alert>
+
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Left Panel - Job Analysis */}
           <div className="space-y-6">
@@ -366,8 +374,11 @@ export default function JobTailoring() {
                   <CardHeader>
                     <CardTitle className="flex items-center">
                       <Lightbulb className="mr-2 h-5 w-5" />
-                      AI Recommendations
+                      Transferable Skills Enhancement
                     </CardTitle>
+                    <CardDescription>
+                      These recommendations amplify your existing skills and experience to better match the job requirements
+                    </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <ul className="space-y-3">
@@ -387,14 +398,17 @@ export default function JobTailoring() {
                     <CardHeader>
                       <CardTitle className="flex items-center">
                         <TrendingUp className="mr-2 h-5 w-5" />
-                        Key Improvement Areas
+                        Skills to Amplify
                       </CardTitle>
+                      <CardDescription>
+                        Existing skills and experiences that should be emphasized more prominently
+                      </CardDescription>
                     </CardHeader>
                     <CardContent>
                       <ul className="space-y-2">
                         {analysisResult.analysis.improvementAreas.map((area, index) => (
                           <li key={index} className="flex items-start">
-                            <div className="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0" />
+                            <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0" />
                             <span className="text-sm">{area}</span>
                           </li>
                         ))}

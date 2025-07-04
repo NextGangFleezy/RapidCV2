@@ -40,6 +40,13 @@ Experience: ${resumeData.workExperience.map(exp =>
   `${exp.position} at ${exp.company}: ${exp.description.join('. ')}`
 ).join('\n')}
 
+OPTIMIZATION GUIDELINES:
+- Preserve the original resume structure and content integrity
+- Focus on amplifying transferable skills that naturally align with job requirements
+- Enhance how existing qualifications are presented without fabricating new experiences
+- Reframe bullet points to emphasize relevant skills and achievements
+- Use industry-specific terminology where appropriate while maintaining truthfulness
+
 Please analyze and provide a JSON response with the following structure:
 {
   "matchedSkills": ["array of skills from resume that match job requirements"],
@@ -47,10 +54,10 @@ Please analyze and provide a JSON response with the following structure:
   "keyRequirements": ["array of 5-7 most important requirements from the job"],
   "originalMatchScore": number between 0-100 representing how well current resume matches job,
   "optimizedMatchScore": number between 0-100 representing predicted match score after optimization,
-  "suggestions": ["array of specific suggestions to improve resume for this job"],
-  "enhancedSummary": "rewritten professional summary optimized for this specific job",
-  "optimizedBullets": ["array of improved bullet points for work experience"],
-  "improvementAreas": ["array of specific areas where optimization provides the biggest impact"]
+  "suggestions": ["array of specific suggestions to amplify transferable skills and enhance existing qualifications"],
+  "enhancedSummary": "rewritten professional summary emphasizing transferable skills relevant to this job",
+  "optimizedBullets": ["array of improved bullet points that amplify existing achievements and transferable skills"],
+  "improvementAreas": ["array of specific existing skills/experiences that should be emphasized more"]
 }
 
 Focus on ATS optimization, keyword matching, and actionable improvements.
