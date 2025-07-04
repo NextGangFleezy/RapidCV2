@@ -159,6 +159,64 @@ IMPORTANT: Return ONLY the JSON object with no explanations, markdown formatting
   }
 }
 
+export async function analyzeATSCompatibility(resumeData: ResumeData): Promise<{
+  overallScore: number;
+  issues: string[];
+  recommendations: string[];
+  keywordDensity: number;
+  formatCompliance: string[];
+}> {
+  const prompt = `Analyze this resume for ATS (Applicant Tracking System) compatibility and provide detailed feedback.
+
+RESUME DATA:
+${JSON.stringify(resumeData, null, 2)}
+
+Evaluate the resume based on:
+1. Keyword optimization and density
+2. Format compliance (clear sections, consistent formatting)
+3. Contact information completeness
+4. Skills presentation
+5. Experience descriptions with action verbs and metrics
+6. Overall ATS readability
+
+Provide a JSON response with:
+{
+  "overallScore": number (0-100),
+  "issues": ["array of specific issues found"],
+  "recommendations": ["array of actionable improvement suggestions"], 
+  "keywordDensity": number (0-100),
+  "formatCompliance": ["array of compliance strengths"]
+}`;
+
+  try {
+    const response = await anthropic.messages.create({
+      model: DEFAULT_MODEL_STR,
+      max_tokens: 2000,
+      messages: [{ role: 'user', content: prompt }],
+    });
+
+    const textContent = response.content[0];
+    let jsonText = (textContent as any)?.text || '{}';
+    
+    // Clean up any markdown formatting
+    jsonText = jsonText.replace(/```json\s*/g, '').replace(/```\s*$/g, '').trim();
+    jsonText = jsonText.replace(/[\u0000-\u001F\u007F-\u009F]/g, '');
+    
+    const result = JSON.parse(jsonText);
+    
+    return {
+      overallScore: Math.min(100, Math.max(0, result.overallScore || 0)),
+      issues: Array.isArray(result.issues) ? result.issues : [],
+      recommendations: Array.isArray(result.recommendations) ? result.recommendations : [],
+      keywordDensity: Math.min(100, Math.max(0, result.keywordDensity || 0)),
+      formatCompliance: Array.isArray(result.formatCompliance) ? result.formatCompliance : []
+    };
+  } catch (error) {
+    console.error('Error analyzing ATS compatibility:', error);
+    throw new Error('Failed to analyze ATS compatibility');
+  }
+}
+
 export async function parseResumeContent(content: string): Promise<Partial<ResumeData>> {
   try {
     // Check if API key is available

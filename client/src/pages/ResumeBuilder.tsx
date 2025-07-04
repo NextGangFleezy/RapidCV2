@@ -11,7 +11,8 @@ import FileUpload from '@/components/FileUpload';
 import ResumeForm from '@/components/ResumeForm';
 import ResumePreview from '@/components/ResumePreview';
 import TemplateSelector from '@/components/TemplateSelector';
-import { Upload, Save, Wand2, ArrowRight, FileText, Brain } from 'lucide-react';
+import ATSScanner from '@/components/ATSScanner';
+import { Upload, Save, Wand2, ArrowRight, FileText, Brain, FileSearch } from 'lucide-react';
 import type { ResumeData, Resume } from '@shared/schema';
 import type { FileUploadResult } from '@/lib/types';
 
@@ -223,7 +224,7 @@ export default function ResumeBuilder() {
           {/* Left Panel - Form */}
           <div className="space-y-6">
             <Tabs defaultValue="build" className="w-full">
-              <TabsList className="grid w-full grid-cols-3">
+              <TabsList className="grid w-full grid-cols-4">
                 <TabsTrigger value="upload" className="flex items-center">
                   <Upload className="mr-2 h-4 w-4" />
                   Upload
@@ -235,6 +236,10 @@ export default function ResumeBuilder() {
                 <TabsTrigger value="template" className="flex items-center">
                   <Brain className="mr-2 h-4 w-4" />
                   Template
+                </TabsTrigger>
+                <TabsTrigger value="ats" className="flex items-center">
+                  <FileSearch className="mr-2 h-4 w-4" />
+                  ATS Scan
                 </TabsTrigger>
               </TabsList>
 
@@ -284,6 +289,26 @@ export default function ResumeBuilder() {
                     />
                   </CardContent>
                 </Card>
+              </TabsContent>
+
+              <TabsContent value="ats" className="mt-6">
+                {id ? (
+                  <ATSScanner resumeId={id} />
+                ) : (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>ATS Scanner</CardTitle>
+                      <p className="text-sm text-muted-foreground">
+                        Save your resume first to analyze ATS compatibility
+                      </p>
+                    </CardHeader>
+                    <CardContent>
+                      <Button onClick={handleSave} disabled={saveResumeMutation.isPending}>
+                        Save Resume First
+                      </Button>
+                    </CardContent>
+                  </Card>
+                )}
               </TabsContent>
             </Tabs>
           </div>

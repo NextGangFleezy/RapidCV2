@@ -12,7 +12,7 @@ import {
   insertResumeSchema,
   type ResumeData 
 } from '@shared/schema';
-import { analyzeJobDescription, parseResumeContent } from './services/openai';
+import { analyzeJobDescription, parseResumeContent, analyzeATSCompatibility } from './services/openai';
 import { upload, extractTextFromFile, validateFileUpload } from './services/fileProcessor';
 import { generatePDF } from './services/pdfGenerator';
 
@@ -204,6 +204,41 @@ router.post('/api/analyze-job', async (req, res) => {
       return res.status(400).json({ error: 'Validation error', details: error.errors });
     }
     console.error('Job analysis error:', error);
+    const message = error instanceof Error ? error.message : 'Unknown error occurred';
+    res.status(500).json({ error: message });
+  }
+});
+
+// ATS Compatibility Scan
+router.post('/api/ats-scan', async (req, res) => {
+  try {
+    const { resumeId } = z.object({ resumeId: z.string() }).parse(req.body);
+    
+    // Get resume data
+    const resume = await storage.getResume(resumeId);
+    if (!resume) {
+      return res.status(404).json({ error: 'Resume not found' });
+    }
+    
+    const resumeData: ResumeData = {
+      personalInfo: resume.personalInfo,
+      summary: resume.summary || '',
+      workExperience: resume.workExperience || [],
+      education: resume.education || [],
+      skills: resume.skills || [],
+      projects: resume.projects || [],
+      template: resume.template || 'modern'
+    };
+    
+    // Analyze ATS compatibility
+    const atsAnalysis = await analyzeATSCompatibility(resumeData);
+    
+    res.json(atsAnalysis);
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({ error: 'Validation error', details: error.errors });
+    }
+    console.error('ATS scan error:', error);
     const message = error instanceof Error ? error.message : 'Unknown error occurred';
     res.status(500).json({ error: message });
   }

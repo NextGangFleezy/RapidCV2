@@ -108,6 +108,7 @@ Changelog:
 - July 04, 2025. Fixed content preservation issue in AI optimization - enhanced bullet point processing to maintain exact count and preserve all original job descriptions while only enhancing them with relevant keywords
 - July 04, 2025. Implemented zero-omission policy in AI optimization - strengthened prompts to ensure no information is ever removed to improve match scores, only additions and enhancements are allowed
 - July 04, 2025. Fixed JSON parsing error in job analysis by increasing Claude token limit to 4000 and adding robust error handling for malformed responses with automatic JSON recovery
+- July 04, 2025. Added ATS (Applicant Tracking System) compatibility scanner feature with comprehensive analysis including overall score, keyword density, format compliance, issues detection, and improvement recommendations
 
 ## User Preferences
 

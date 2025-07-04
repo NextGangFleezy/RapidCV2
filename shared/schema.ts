@@ -101,6 +101,14 @@ export interface UploadedFile {
   content: string;
 }
 
+export interface ATSAnalysis {
+  overallScore: number;
+  issues: string[];
+  recommendations: string[];
+  keywordDensity: number;
+  formatCompliance: string[];
+}
+
 // Zod schemas for validation
 export const personalInfoSchema = z.object({
   fullName: z.string().min(1, 'Full name is required'),
