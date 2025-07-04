@@ -43,16 +43,12 @@ ${exp.description.map((bullet, bulletIdx) => `${bulletIdx + 1}. ${bullet}`).join
 
 TOTAL BULLET POINTS TO OPTIMIZE: ${resumeData.workExperience.reduce((total, exp) => total + exp.description.length, 0)}
 
-CRITICAL OPTIMIZATION GUIDELINES - ZERO CONTENT REMOVAL:
-- NEVER omit, remove, delete, or shorten any existing content from the resume
-- PRESERVE ALL original job descriptions, bullet points, and accomplishments completely
-- DO NOT sacrifice any information to improve match scores - only ADD and enhance
-- KEEP every single word of original content while adding relevant keywords
-- ENHANCE each bullet point by expanding it with transferable skills emphasis
-- MAINTAIN or INCREASE the length of each description - never make them shorter
-- ADD industry-specific terminology and relevant keywords to existing content
-- AMPLIFY achievements by adding context about their relevance to the target role
-- KEEP all original dates, company names, position titles, and achievements unchanged
+CRITICAL RULES - ZERO CONTENT REMOVAL:
+- NEVER remove/delete/shorten ANY existing content
+- PRESERVE ALL original bullet points completely  
+- ONLY ADD keywords and expand descriptions
+- MAINTAIN exact bullet count per job
+- ENHANCE by expanding, never by replacing
 
 Please analyze and provide a JSON response with the following structure:
 {
@@ -77,7 +73,7 @@ IMPORTANT: Return ONLY the JSON object with no explanations, markdown formatting
 `;
 
     const response = await anthropic.messages.create({
-      max_tokens: 1024,
+      max_tokens: 4000,
       messages: [{ role: 'user', content: prompt }],
       // "claude-sonnet-4-20250514"
       model: DEFAULT_MODEL_STR,
@@ -92,9 +88,32 @@ IMPORTANT: Return ONLY the JSON object with no explanations, markdown formatting
     // Clean up any markdown formatting that Claude might add
     jsonText = jsonText.replace(/```json\s*/g, '').replace(/```\s*$/g, '').trim();
     
+    // Additional cleaning for common JSON issues
+    jsonText = jsonText.replace(/[\u0000-\u001F\u007F-\u009F]/g, ''); // Remove control characters
+    jsonText = jsonText.replace(/\n/g, '\\n').replace(/\r/g, '\\r').replace(/\t/g, '\\t'); // Escape line breaks
+    
     console.log('Cleaned analysis JSON text:', jsonText.substring(0, 200) + '...');
     
-    const result = JSON.parse(jsonText);
+    let result;
+    try {
+      result = JSON.parse(jsonText);
+    } catch (parseError) {
+      console.error('JSON Parse Error:', parseError);
+      console.error('Problematic JSON text:', jsonText.substring(5680, 5720)); // Show area around error
+      
+      // Try to fix common JSON issues
+      let fixedJson = jsonText;
+      
+      // Fix unterminated strings by finding the last complete object
+      const lastCompleteObject = jsonText.lastIndexOf('}');
+      if (lastCompleteObject > 0) {
+        fixedJson = jsonText.substring(0, lastCompleteObject + 1);
+        console.log('Attempting to parse truncated JSON...');
+        result = JSON.parse(fixedJson);
+      } else {
+        throw new Error('Unable to parse Claude response as valid JSON');
+      }
+    }
 
     // Create optimized experience entries - preserve ALL original content
     const optimizedExperience: WorkExperience[] = resumeData.workExperience.map((exp, expIndex) => {
@@ -111,9 +130,10 @@ IMPORTANT: Return ONLY the JSON object with no explanations, markdown formatting
       ) || exp.description;
 
       // Ensure we have the same number of bullets as original
-      const finalBullets = optimizedBullets.length === exp.description.length 
+      // If optimization fails or doesn't match count, preserve original content
+      const finalBullets = (optimizedBullets && optimizedBullets.length === exp.description.length) 
         ? optimizedBullets 
-        : exp.description; // Fallback to original if counts don't match
+        : exp.description; // Always fallback to original to preserve content
 
       return {
         ...exp,
