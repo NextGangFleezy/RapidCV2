@@ -7,14 +7,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '@/lib/queryClient';
-import FileUpload from '@/components/FileUpload';
 import ResumeForm from '@/components/ResumeForm';
 import ResumePreview from '@/components/ResumePreview';
 import TemplateSelector from '@/components/TemplateSelector';
 import ATSScanner from '@/components/ATSScanner';
-import { Upload, Save, Wand2, ArrowRight, FileText, Brain, FileSearch } from 'lucide-react';
+import { Save, Wand2, ArrowRight, FileText, Brain, FileSearch } from 'lucide-react';
 import type { ResumeData, Resume } from '@shared/schema';
-import type { FileUploadResult } from '@/lib/types';
 
 export default function ResumeBuilder() {
   const { id } = useParams();
@@ -122,35 +120,7 @@ export default function ResumeBuilder() {
     },
   });
 
-  const handleFileProcessed = (result: FileUploadResult) => {
-    const { parsedData } = result;
-    
-    // Merge parsed data with current resume data
-    const newResumeData = {
-      ...resumeData,
-      personalInfo: {
-        ...resumeData.personalInfo,
-        ...parsedData.personalInfo,
-      },
-      summary: parsedData.summary || resumeData.summary,
-      workExperience: parsedData.workExperience || resumeData.workExperience,
-      education: parsedData.education || resumeData.education,
-      skills: [...(resumeData.skills || []), ...(parsedData.skills || [])].filter((skill, index, arr) => 
-        arr.indexOf(skill) === index
-      ),
-      projects: parsedData.projects || resumeData.projects,
-    };
-    
-    setResumeData(newResumeData);
 
-    toast({
-      title: 'Resume Imported',
-      description: 'Your resume has been imported and is ready for editing.',
-    });
-
-    // Auto-save the resume after importing
-    saveResumeMutation.mutate(newResumeData);
-  };
 
   const handleSave = () => {
     saveResumeMutation.mutate(resumeData);
@@ -224,11 +194,7 @@ export default function ResumeBuilder() {
           {/* Left Panel - Form */}
           <div className="space-y-6">
             <Tabs defaultValue="build" className="w-full">
-              <TabsList className="grid w-full grid-cols-4">
-                <TabsTrigger value="upload" className="flex items-center">
-                  <Upload className="mr-2 h-4 w-4" />
-                  Upload
-                </TabsTrigger>
+              <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="build" className="flex items-center">
                   <FileText className="mr-2 h-4 w-4" />
                   Build
@@ -243,28 +209,7 @@ export default function ResumeBuilder() {
                 </TabsTrigger>
               </TabsList>
 
-              <TabsContent value="upload" className="mt-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Upload Existing Resume</CardTitle>
-                    <p className="text-sm text-muted-foreground">
-                      Upload your current resume and we'll extract the information automatically
-                    </p>
-                  </CardHeader>
-                  <CardContent>
-                    <FileUpload
-                      onFileProcessed={handleFileProcessed}
-                      onError={(error) => {
-                        toast({
-                          title: 'Upload Error',
-                          description: error,
-                          variant: 'destructive',
-                        });
-                      }}
-                    />
-                  </CardContent>
-                </Card>
-              </TabsContent>
+
 
               <TabsContent value="build" className="mt-6">
                 <ResumeForm
