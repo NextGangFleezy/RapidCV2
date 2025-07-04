@@ -49,6 +49,9 @@ CRITICAL RULES - ZERO CONTENT REMOVAL:
 - ONLY ADD keywords and expand descriptions
 - MAINTAIN exact bullet count per job
 - ENHANCE by expanding, never by replacing
+- PRESERVE ALL dates exactly as provided (startDate, endDate)
+- NEVER modify company names, position titles, or employment dates
+- KEEP all chronological information unchanged
 
 Please analyze and provide a JSON response with the following structure:
 {
@@ -66,6 +69,12 @@ Please analyze and provide a JSON response with the following structure:
 EXAMPLE OF PROPER ENHANCEMENT (DO NOT REMOVE CONTENT):
 Original: "Managed customer accounts and resolved issues"
 Enhanced: "Managed customer accounts and resolved issues, demonstrating strong analytical skills and regulatory compliance expertise while maintaining 98% customer satisfaction through effective communication and problem-solving"
+
+CRITICAL DATE PRESERVATION:
+- Employment dates (startDate, endDate) must remain EXACTLY as provided
+- Company names must remain EXACTLY as provided
+- Position titles must remain EXACTLY as provided
+- All structural resume data must be preserved unchanged
 
 Focus on ATS optimization, keyword matching, and actionable improvements through ADDITION and EXPANSION only.
 
@@ -137,6 +146,13 @@ IMPORTANT: Return ONLY the JSON object with no explanations, markdown formatting
 
       return {
         ...exp,
+        // Explicitly preserve all structural data
+        company: exp.company,
+        position: exp.position,
+        startDate: exp.startDate,
+        endDate: exp.endDate,
+        current: exp.current,
+        location: exp.location,
         description: finalBullets
       };
     });
