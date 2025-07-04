@@ -101,6 +101,7 @@ Changelog:
 - July 04, 2025. Improved text extraction accuracy for Word documents using HTML conversion
 - July 04, 2025. Fixed Claude JSON parsing errors by cleaning markdown formatting
 - July 04, 2025. Resolved React infinite update loop in ResumeForm component
+- July 04, 2025. Fixed auto-save functionality after file upload to ensure resume data is properly stored before job tailoring
 
 ## User Preferences
 

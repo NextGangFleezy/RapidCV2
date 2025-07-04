@@ -49,7 +49,15 @@ export default function ResumeBuilder() {
   useEffect(() => {
     if (existingResume && !isLoading) {
       setResumeData({
-        personalInfo: existingResume.personalInfo,
+        personalInfo: existingResume.personalInfo || {
+          fullName: '',
+          email: '',
+          phone: '',
+          location: '',
+          website: '',
+          linkedin: '',
+          github: '',
+        },
         summary: existingResume.summary || '',
         workExperience: existingResume.workExperience || [],
         education: existingResume.education || [],
@@ -76,30 +84,32 @@ export default function ResumeBuilder() {
       };
 
       if (id) {
-        return apiRequest(`/api/resumes/${id}`, {
-          method: 'PUT',
-          body: JSON.stringify(payload),
-        });
+        return apiRequest(`/api/resumes/${id}`, 'PUT', payload);
       } else {
-        return apiRequest('/api/resumes', {
-          method: 'POST',
-          body: JSON.stringify(payload),
-        });
+        return apiRequest('/api/resumes', 'POST', payload);
       }
     },
     onSuccess: async (response) => {
-      const savedResume: Resume = await response.json();
-      
-      toast({
-        title: 'Resume Saved',
-        description: 'Your resume has been saved successfully.',
-      });
+      try {
+        const savedResume: Resume = await response.json();
+        
+        toast({
+          title: 'Resume Saved',
+          description: 'Your resume has been saved successfully.',
+        });
 
-      // Invalidate queries and redirect if new resume
-      queryClient.invalidateQueries({ queryKey: ['/api/resumes'] });
-      
-      if (!id) {
-        setLocation(`/builder/${savedResume.id}`);
+        // Invalidate queries and redirect if new resume
+        queryClient.invalidateQueries({ queryKey: ['/api/resumes'] });
+        
+        if (!id) {
+          setLocation(`/builder/${savedResume.id}`);
+        }
+      } catch (error) {
+        console.error('Error parsing save response:', error);
+        toast({
+          title: 'Save Completed',
+          description: 'Your resume has been saved.',
+        });
       }
     },
     onError: (error) => {
@@ -115,25 +125,30 @@ export default function ResumeBuilder() {
     const { parsedData } = result;
     
     // Merge parsed data with current resume data
-    setResumeData(prev => ({
-      ...prev,
+    const newResumeData = {
+      ...resumeData,
       personalInfo: {
-        ...prev.personalInfo,
+        ...resumeData.personalInfo,
         ...parsedData.personalInfo,
       },
-      summary: parsedData.summary || prev.summary,
-      workExperience: parsedData.workExperience || prev.workExperience,
-      education: parsedData.education || prev.education,
-      skills: [...(prev.skills || []), ...(parsedData.skills || [])].filter((skill, index, arr) => 
+      summary: parsedData.summary || resumeData.summary,
+      workExperience: parsedData.workExperience || resumeData.workExperience,
+      education: parsedData.education || resumeData.education,
+      skills: [...(resumeData.skills || []), ...(parsedData.skills || [])].filter((skill, index, arr) => 
         arr.indexOf(skill) === index
       ),
-      projects: parsedData.projects || prev.projects,
-    }));
+      projects: parsedData.projects || resumeData.projects,
+    };
+    
+    setResumeData(newResumeData);
 
     toast({
       title: 'Resume Imported',
       description: 'Your resume has been imported and is ready for editing.',
     });
+
+    // Auto-save the resume after importing
+    saveResumeMutation.mutate(newResumeData);
   };
 
   const handleSave = () => {
