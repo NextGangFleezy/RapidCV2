@@ -36,16 +36,21 @@ CURRENT RESUME DATA:
 Name: ${resumeData.personalInfo.fullName}
 Summary: ${resumeData.summary}
 Skills: ${resumeData.skills.join(', ')}
-Experience: ${resumeData.workExperience.map(exp => 
-  `${exp.position} at ${exp.company}: ${exp.description.join('. ')}`
-).join('\n')}
+Experience: ${resumeData.workExperience.map((exp, idx) => 
+  `JOB ${idx + 1} - ${exp.position} at ${exp.company} (${exp.description.length} bullet points):
+${exp.description.map((bullet, bulletIdx) => `${bulletIdx + 1}. ${bullet}`).join('\n')}`
+).join('\n\n')}
 
-OPTIMIZATION GUIDELINES:
-- Preserve the original resume structure and content integrity
-- Focus on amplifying transferable skills that naturally align with job requirements
-- Enhance how existing qualifications are presented without fabricating new experiences
-- Reframe bullet points to emphasize relevant skills and achievements
-- Use industry-specific terminology where appropriate while maintaining truthfulness
+TOTAL BULLET POINTS TO OPTIMIZE: ${resumeData.workExperience.reduce((total, exp) => total + exp.description.length, 0)}
+
+CRITICAL OPTIMIZATION GUIDELINES:
+- NEVER remove or delete any existing content from the resume
+- PRESERVE ALL original job descriptions, bullet points, and accomplishments 
+- ONLY enhance and reframe existing content to emphasize transferable skills
+- ADD relevant keywords and industry terminology while keeping original meaning
+- AMPLIFY existing achievements by highlighting their relevance to the target role
+- MAINTAIN the exact same number of bullet points for each job
+- KEEP all original dates, company names, and position titles unchanged
 
 Please analyze and provide a JSON response with the following structure:
 {
@@ -56,7 +61,7 @@ Please analyze and provide a JSON response with the following structure:
   "optimizedMatchScore": number between 0-100 representing predicted match score after optimization,
   "suggestions": ["array of specific suggestions to amplify transferable skills and enhance existing qualifications"],
   "enhancedSummary": "rewritten professional summary emphasizing transferable skills relevant to this job",
-  "optimizedBullets": ["array of improved bullet points that amplify existing achievements and transferable skills"],
+  "optimizedBullets": ["array of ALL original bullet points enhanced with relevant keywords and transferable skills emphasis - must contain exact same number of bullets as original resume"],
   "improvementAreas": ["array of specific existing skills/experiences that should be emphasized more"]
 }
 
@@ -85,16 +90,28 @@ IMPORTANT: Return ONLY the JSON object with no explanations, markdown formatting
     
     const result = JSON.parse(jsonText);
 
-    // Create optimized experience entries
-    const optimizedExperience: WorkExperience[] = resumeData.workExperience.map((exp, index) => {
+    // Create optimized experience entries - preserve ALL original content
+    const optimizedExperience: WorkExperience[] = resumeData.workExperience.map((exp, expIndex) => {
+      // Calculate total bullets processed so far
+      let bulletsProcessed = 0;
+      for (let i = 0; i < expIndex; i++) {
+        bulletsProcessed += resumeData.workExperience[i].description.length;
+      }
+      
+      // Get the optimized bullets for this specific job
       const optimizedBullets = result.optimizedBullets?.slice(
-        index * 3, 
-        (index + 1) * 3
+        bulletsProcessed, 
+        bulletsProcessed + exp.description.length
       ) || exp.description;
+
+      // Ensure we have the same number of bullets as original
+      const finalBullets = optimizedBullets.length === exp.description.length 
+        ? optimizedBullets 
+        : exp.description; // Fallback to original if counts don't match
 
       return {
         ...exp,
-        description: optimizedBullets
+        description: finalBullets
       };
     });
 

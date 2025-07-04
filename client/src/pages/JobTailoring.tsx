@@ -190,7 +190,7 @@ export default function JobTailoring() {
         <Alert className="mb-6">
           <CheckCircle className="h-4 w-4" />
           <AlertDescription>
-            <strong>Preserving Your Resume Integrity:</strong> Our AI amplifies your existing skills and experience to match job requirements without fabricating new qualifications. Your original accomplishments remain authentic while being presented in the most relevant way.
+            <strong>Content Preservation Guarantee:</strong> Your original resume content is never deleted or removed. Our AI only enhances and reframes your existing accomplishments to better match job requirements. All your bullet points, job descriptions, and achievements remain intact with improved keyword optimization and transferable skills emphasis.
           </AlertDescription>
         </Alert>
 

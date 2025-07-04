@@ -105,6 +105,7 @@ Changelog:
 - July 04, 2025. Fixed query structure in JobTailoring component to properly fetch single resume data and resolve undefined access errors
 - July 04, 2025. Enhanced job matching analysis with before/after optimization scoring system showing original match score, optimized match score, improvement delta, and key improvement areas for better user insights
 - July 04, 2025. Implemented integrity-preserving resume optimization that amplifies existing transferable skills without fabricating new qualifications, maintaining authentic accomplishments while enhancing job relevance
+- July 04, 2025. Fixed content preservation issue in AI optimization - enhanced bullet point processing to maintain exact count and preserve all original job descriptions while only enhancing them with relevant keywords
 
 ## User Preferences
 
