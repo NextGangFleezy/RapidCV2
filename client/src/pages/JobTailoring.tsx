@@ -250,21 +250,47 @@ export default function JobTailoring() {
                   <CardHeader>
                     <CardTitle className="flex items-center">
                       <TrendingUp className="mr-2 h-5 w-5" />
-                      Match Score
+                      Match Score Comparison
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="flex items-center space-x-4">
-                      <div className="flex-1">
-                        <Progress value={analysisResult.analysis.matchScore} className="h-3" />
+                    <div className="space-y-4">
+                      {/* Original Score */}
+                      <div>
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-sm font-medium">Before Optimization</span>
+                          <span className="text-lg font-bold text-muted-foreground">
+                            {analysisResult.analysis.originalMatchScore}%
+                          </span>
+                        </div>
+                        <Progress value={analysisResult.analysis.originalMatchScore} className="h-2" />
                       </div>
-                      <div className="text-2xl font-bold text-primary">
-                        {analysisResult.analysis.matchScore}%
+                      
+                      {/* Optimized Score */}
+                      <div>
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-sm font-medium">After Optimization</span>
+                          <span className="text-lg font-bold text-green-600">
+                            {analysisResult.analysis.optimizedMatchScore}%
+                          </span>
+                        </div>
+                        <Progress value={analysisResult.analysis.optimizedMatchScore} className="h-2" />
                       </div>
+                      
+                      {/* Improvement Delta */}
+                      {analysisResult.analysis.optimizedMatchScore > analysisResult.analysis.originalMatchScore && (
+                        <div className="flex items-center justify-center p-3 bg-green-50 dark:bg-green-950 rounded-lg">
+                          <div className="text-center">
+                            <div className="text-2xl font-bold text-green-600">
+                              +{analysisResult.analysis.optimizedMatchScore - analysisResult.analysis.originalMatchScore}%
+                            </div>
+                            <div className="text-sm text-green-700 dark:text-green-300">
+                              Improvement with optimization
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
-                    <p className="text-sm text-muted-foreground mt-2">
-                      How well your resume matches this job description
-                    </p>
                   </CardContent>
                 </Card>
 
@@ -355,24 +381,51 @@ export default function JobTailoring() {
                   </CardContent>
                 </Card>
 
-                {/* Action Buttons */}
-                <div className="flex space-x-3">
-                  <Button
-                    variant={showOptimized ? "secondary" : "default"}
-                    onClick={() => setShowOptimized(false)}
-                    className="flex-1"
-                  >
-                    <FileText className="mr-2 h-4 w-4" />
-                    View Original
-                  </Button>
-                  <Button
-                    variant={showOptimized ? "default" : "secondary"}
-                    onClick={() => setShowOptimized(true)}
-                    className="flex-1 bg-primary hover:bg-primary/90"
-                  >
-                    <Brain className="mr-2 h-4 w-4" />
-                    View Optimized
-                  </Button>
+                {/* Improvement Areas */}
+                {analysisResult.analysis.improvementAreas && analysisResult.analysis.improvementAreas.length > 0 && (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center">
+                        <TrendingUp className="mr-2 h-5 w-5" />
+                        Key Improvement Areas
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <ul className="space-y-2">
+                        {analysisResult.analysis.improvementAreas.map((area, index) => (
+                          <li key={index} className="flex items-start">
+                            <div className="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0" />
+                            <span className="text-sm">{area}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </CardContent>
+                  </Card>
+                )}
+
+                {/* Action Buttons with Score Context */}
+                <div className="space-y-4">
+                  <div className="text-sm text-muted-foreground text-center">
+                    Compare your resume versions below
+                  </div>
+                  <div className="flex space-x-3">
+                    <Button
+                      variant={showOptimized ? "secondary" : "default"}
+                      onClick={() => setShowOptimized(false)}
+                      className="flex-1"
+                    >
+                      <FileText className="mr-2 h-4 w-4" />
+                      View Original ({analysisResult.analysis.originalMatchScore}%)
+                    </Button>
+                    <Button
+                      variant={showOptimized ? "default" : "secondary"}
+                      onClick={() => setShowOptimized(true)}
+                      className="flex-1 bg-green-600 hover:bg-green-700"
+                    >
+                      <Brain className="mr-2 h-4 w-4" />
+                      View Optimized ({analysisResult.analysis.optimizedMatchScore}%)
+                    </Button>
+                  </div>
                 </div>
               </div>
             )}

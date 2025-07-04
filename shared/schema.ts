@@ -86,10 +86,12 @@ export interface JobAnalysis {
   matchedSkills: string[];
   missingSkills: string[];
   keyRequirements: string[];
-  matchScore: number;
+  originalMatchScore: number;
+  optimizedMatchScore: number;
   suggestions: string[];
   enhancedSummary?: string;
   optimizedExperience?: WorkExperience[];
+  improvementAreas?: string[];
 }
 
 export interface UploadedFile {

@@ -3,10 +3,12 @@ export interface AnalysisResult {
     matchedSkills: string[];
     missingSkills: string[];
     keyRequirements: string[];
-    matchScore: number;
+    originalMatchScore: number;
+    optimizedMatchScore: number;
     suggestions: string[];
     enhancedSummary?: string;
     optimizedExperience?: any[];
+    improvementAreas?: string[];
   };
   tailoredResume: any;
   analysisId: string;

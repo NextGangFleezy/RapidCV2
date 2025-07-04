@@ -45,10 +45,12 @@ Please analyze and provide a JSON response with the following structure:
   "matchedSkills": ["array of skills from resume that match job requirements"],
   "missingSkills": ["array of important skills mentioned in job but missing from resume"],
   "keyRequirements": ["array of 5-7 most important requirements from the job"],
-  "matchScore": number between 0-100 representing how well resume matches job,
+  "originalMatchScore": number between 0-100 representing how well current resume matches job,
+  "optimizedMatchScore": number between 0-100 representing predicted match score after optimization,
   "suggestions": ["array of specific suggestions to improve resume for this job"],
   "enhancedSummary": "rewritten professional summary optimized for this specific job",
-  "optimizedBullets": ["array of improved bullet points for work experience"]
+  "optimizedBullets": ["array of improved bullet points for work experience"],
+  "improvementAreas": ["array of specific areas where optimization provides the biggest impact"]
 }
 
 Focus on ATS optimization, keyword matching, and actionable improvements.
@@ -93,10 +95,12 @@ IMPORTANT: Return ONLY the JSON object with no explanations, markdown formatting
       matchedSkills: result.matchedSkills || [],
       missingSkills: result.missingSkills || [],
       keyRequirements: result.keyRequirements || [],
-      matchScore: Math.max(0, Math.min(100, result.matchScore || 0)),
+      originalMatchScore: Math.max(0, Math.min(100, result.originalMatchScore || 0)),
+      optimizedMatchScore: Math.max(0, Math.min(100, result.optimizedMatchScore || 0)),
       suggestions: result.suggestions || [],
       enhancedSummary: result.enhancedSummary || resumeData.summary,
-      optimizedExperience
+      optimizedExperience,
+      improvementAreas: result.improvementAreas || []
     };
 
   } catch (error) {
