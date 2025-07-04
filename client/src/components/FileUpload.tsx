@@ -24,15 +24,21 @@ export default function FileUpload({ onFileProcessed, onError }: FileUploadProps
       const file = acceptedFiles[0];
       if (!file) return;
 
-      // Validate file type
+      // Validate file type and extension
       const allowedTypes = [
         'application/pdf',
         'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
         'application/msword'
       ];
 
-      if (!allowedTypes.includes(file.type)) {
-        const errorMsg = 'Invalid file type. Please upload a PDF or DOCX file.';
+      const allowedExtensions = ['.pdf', '.docx', '.doc'];
+      const fileExtension = file.name.toLowerCase().substring(file.name.lastIndexOf('.'));
+
+      // Check both MIME type and file extension for better compatibility
+      const isValidType = allowedTypes.includes(file.type) || allowedExtensions.includes(fileExtension);
+      
+      if (!isValidType) {
+        const errorMsg = `Invalid file type. Please upload a PDF or DOCX file. (Detected: ${file.type || 'unknown'}, Extension: ${fileExtension})`;
         toast({
           title: 'Upload Error',
           description: errorMsg,
@@ -41,6 +47,13 @@ export default function FileUpload({ onFileProcessed, onError }: FileUploadProps
         onError?.(errorMsg);
         return;
       }
+
+      console.log('File validation passed:', {
+        name: file.name,
+        type: file.type,
+        size: file.size,
+        extension: fileExtension
+      });
 
       // Validate file size (10MB limit)
       if (file.size > 10 * 1024 * 1024) {
@@ -100,7 +113,20 @@ export default function FileUpload({ onFileProcessed, onError }: FileUploadProps
         throw new Error(errorMessage);
       }
     } catch (error) {
-      const errorMsg = error instanceof Error ? error.message : 'Failed to process file';
+      console.error('File upload error:', error);
+      
+      let errorMsg = 'Failed to process file';
+      
+      if (error instanceof Error) {
+        errorMsg = error.message;
+        
+        // Handle specific browser security errors
+        if (error.message.includes('NSURLErrorDomain') || error.message.includes('Cannot open file')) {
+          errorMsg = 'File access error. This might be due to browser security restrictions. Try saving the file to your Downloads folder and uploading from there, or try a different browser.';
+        } else if (error.message.includes('NetworkError') || error.message.includes('Failed to fetch')) {
+          errorMsg = 'Network error during upload. Please check your connection and try again.';
+        }
+      }
       
       toast({
         title: 'Upload Failed',
@@ -156,10 +182,15 @@ export default function FileUpload({ onFileProcessed, onError }: FileUploadProps
                   <p className="text-sm text-muted-foreground mb-4">
                     Supports PDF and DOCX files up to 10MB
                   </p>
-                  <Button variant="outline" type="button" disabled={uploading}>
-                    <Upload className="mr-2 h-4 w-4" />
-                    Choose File
-                  </Button>
+                  <div className="space-y-2">
+                    <Button variant="outline" type="button" disabled={uploading}>
+                      <Upload className="mr-2 h-4 w-4" />
+                      Choose File
+                    </Button>
+                    <p className="text-xs text-muted-foreground">
+                      Having trouble? Try saving the file to Downloads first, or use a different browser
+                    </p>
+                  </div>
                 </>
               )}
             </div>

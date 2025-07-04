@@ -26,19 +26,33 @@ export const upload = multer({
 
 export async function extractTextFromFile(file: Express.Multer.File): Promise<UploadedFile> {
   try {
+    console.log('Processing file:', {
+      originalname: file.originalname,
+      mimetype: file.mimetype,
+      size: file.size,
+      bufferLength: file.buffer?.length
+    });
+
+    // Validate buffer exists
+    if (!file.buffer || file.buffer.length === 0) {
+      throw new Error('File buffer is empty or corrupted');
+    }
+
     let extractedText = '';
     
     if (file.mimetype === 'application/pdf') {
+      console.log('Processing PDF file...');
       const pdfData = await pdfParse(file.buffer);
       extractedText = pdfData.text;
     } else if (
       file.mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
       file.mimetype === 'application/msword'
     ) {
+      console.log('Processing Word document...');
       const result = await mammoth.extractRawText({ buffer: file.buffer });
       extractedText = result.value;
     } else {
-      throw new Error('Unsupported file type');
+      throw new Error(`Unsupported file type: ${file.mimetype}`);
     }
 
     // Clean up the extracted text

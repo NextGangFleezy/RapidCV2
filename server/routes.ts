@@ -103,6 +103,15 @@ router.delete('/api/resumes/:id', async (req, res) => {
 // Upload and parse resume file
 router.post('/api/upload-resume', upload.single('file'), async (req: RequestWithFile, res) => {
   try {
+    console.log('File upload request received:', {
+      hasFile: !!req.file,
+      fileInfo: req.file ? {
+        originalname: req.file.originalname,
+        mimetype: req.file.mimetype,
+        size: req.file.size
+      } : null
+    });
+
     // Validate file upload
     validateFileUpload(req.file);
     
