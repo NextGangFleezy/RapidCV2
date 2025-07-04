@@ -157,42 +157,82 @@ export default function FileUpload({ onFileProcessed, onError }: FileUploadProps
     setProgress(0);
   };
 
+  // Handle file selection via button
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      onDrop(Array.from(files));
+    }
+    // Reset input value to allow selecting the same file again
+    event.target.value = '';
+  };
+
   return (
     <Card className="w-full">
       <CardContent className="p-6">
         {!uploadedFile ? (
-          <div
-            {...getRootProps()}
-            className={`
-              file-upload-area cursor-pointer
-              ${isDragActive ? 'dragover' : ''}
-              ${uploading ? 'pointer-events-none opacity-50' : ''}
-            `}
-          >
-            <input {...getInputProps()} />
+          <div className="space-y-4">
+            {/* Primary Choose File Button */}
             <div className="text-center">
-              <Upload className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              {isDragActive ? (
-                <p className="text-lg font-medium text-primary">Drop your resume here...</p>
-              ) : (
-                <>
-                  <p className="text-lg font-medium text-foreground mb-2">
-                    Drop your resume here or click to browse
-                  </p>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Supports PDF and DOCX files up to 10MB
-                  </p>
-                  <div className="space-y-2">
-                    <Button variant="outline" type="button" disabled={uploading}>
-                      <Upload className="mr-2 h-4 w-4" />
-                      Choose File
-                    </Button>
+              <input
+                type="file"
+                id="file-input"
+                accept=".pdf,.doc,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/msword"
+                onChange={handleFileSelect}
+                disabled={uploading}
+                className="hidden"
+              />
+              <label htmlFor="file-input">
+                <Button 
+                  variant="default" 
+                  size="lg" 
+                  disabled={uploading}
+                  className="cursor-pointer"
+                  asChild
+                >
+                  <span>
+                    <Upload className="mr-2 h-5 w-5" />
+                    Choose Resume File
+                  </span>
+                </Button>
+              </label>
+              <p className="text-sm text-muted-foreground mt-2">
+                Supports PDF and DOCX files up to 10MB
+              </p>
+            </div>
+
+            {/* Divider */}
+            <div className="flex items-center">
+              <div className="flex-1 border-t border-border"></div>
+              <span className="px-3 text-sm text-muted-foreground">or</span>
+              <div className="flex-1 border-t border-border"></div>
+            </div>
+
+            {/* Drag and Drop Area */}
+            <div
+              {...getRootProps()}
+              className={`
+                file-upload-area cursor-pointer
+                ${isDragActive ? 'dragover' : ''}
+                ${uploading ? 'pointer-events-none opacity-50' : ''}
+              `}
+            >
+              <input {...getInputProps()} />
+              <div className="text-center py-8">
+                <Upload className="h-8 w-8 text-muted-foreground mx-auto mb-3" />
+                {isDragActive ? (
+                  <p className="text-base font-medium text-primary">Drop your resume here...</p>
+                ) : (
+                  <div>
+                    <p className="text-base font-medium text-foreground mb-1">
+                      Drag and drop your resume here
+                    </p>
                     <p className="text-xs text-muted-foreground">
                       Having trouble? Try saving the file to Downloads first, or use a different browser
                     </p>
                   </div>
-                </>
-              )}
+                )}
+              </div>
             </div>
           </div>
         ) : (
