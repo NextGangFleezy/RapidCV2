@@ -315,7 +315,11 @@ export default function ResumeBuilder() {
 
           {/* Right Panel - Preview */}
           <div className="lg:sticky lg:top-8 lg:h-fit">
-            <ResumePreview data={resumeData} template={resumeData.template} />
+            <ResumePreview 
+              data={resumeData} 
+              template={resumeData.template} 
+              onTemplateChange={handleTemplateChange}
+            />
           </div>
         </div>
 

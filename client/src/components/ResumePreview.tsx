@@ -2,22 +2,25 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { Download, Eye, ExternalLink } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Download, Eye, ExternalLink, Palette } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '@/lib/queryClient';
+import { TEMPLATES } from '@/lib/types';
 import type { ResumeData } from '@shared/schema';
 
 interface ResumePreviewProps {
   data: ResumeData;
   template?: string;
+  onTemplateChange?: (templateId: string) => void;
 }
 
-export default function ResumePreview({ data, template = 'modern' }: ResumePreviewProps) {
+export default function ResumePreview({ data, template = 'modern', onTemplateChange }: ResumePreviewProps) {
   const { toast } = useToast();
 
   const handleDownload = async () => {
     try {
-      const response = await apiRequest('/api/export-pdf', {
+      const response = await fetch('/api/export-pdf', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -70,7 +73,24 @@ export default function ResumePreview({ data, template = 'modern' }: ResumePrevi
       {/* Preview Controls */}
       <div className="flex justify-between items-center">
         <h3 className="text-lg font-semibold">Live Preview</h3>
-        <div className="flex space-x-2">
+        <div className="flex items-center space-x-3">
+          {onTemplateChange && (
+            <div className="flex items-center space-x-2">
+              <Palette className="h-4 w-4 text-muted-foreground" />
+              <Select value={template} onValueChange={onTemplateChange}>
+                <SelectTrigger className="w-[140px]">
+                  <SelectValue placeholder="Template" />
+                </SelectTrigger>
+                <SelectContent>
+                  {TEMPLATES.map((templateOption) => (
+                    <SelectItem key={templateOption.id} value={templateOption.id}>
+                      {templateOption.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
           <Button variant="outline" size="sm" onClick={handleDownload}>
             <Download className="h-4 w-4 mr-2" />
             Download PDF

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'wouter';
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
@@ -22,6 +22,7 @@ import type { AnalysisResult } from '@/lib/types';
 export default function JobTailoring() {
   const { id } = useParams();
   const { toast } = useToast();
+  const queryClient = useQueryClient();
   
   const [jobDescription, setJobDescription] = useState('');
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
@@ -129,6 +130,33 @@ export default function JobTailoring() {
       return analysisResult.tailoredResume;
     }
     return getCurrentResumeData();
+  };
+
+  const handleTemplateChange = (templateId: string) => {
+    if (!id) return;
+    
+    // Update the resume template
+    const updateMutation = {
+      mutationFn: async () => {
+        const response = await apiRequest('PATCH', `/api/resumes/${id}`, { template: templateId });
+        if (!response.ok) {
+          throw new Error('Failed to update template');
+        }
+        return response.json();
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: [`/api/resumes/${id}`] });
+      }
+    };
+    
+    // Execute the mutation
+    fetch(`/api/resumes/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ template: templateId })
+    }).then(() => {
+      queryClient.invalidateQueries({ queryKey: [`/api/resumes/${id}`] });
+    });
   };
 
   if (isLoading) {
@@ -483,6 +511,7 @@ export default function JobTailoring() {
               <ResumePreview 
                 data={getPreviewData()} 
                 template={resume.template || 'modern'} 
+                onTemplateChange={handleTemplateChange}
               />
             </div>
           </div>
