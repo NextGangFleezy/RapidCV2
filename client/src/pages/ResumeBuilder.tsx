@@ -127,9 +127,19 @@ export default function ResumeBuilder() {
   });
 
   const handleFileProcessed = (result: FileUploadResult) => {
-    const { parsedData } = result;
+    const { parsedData, resumeId } = result;
     
-    // Merge parsed data with current resume data
+    // If we got a resume ID from the upload, redirect to that resume
+    if (resumeId) {
+      setLocation(`/builder/${resumeId}`);
+      toast({
+        title: 'Resume Imported',
+        description: 'Your resume has been imported and is ready for editing.',
+      });
+      return;
+    }
+
+    // Fallback to merging data (for backward compatibility)
     const newResumeData = {
       ...resumeData,
       personalInfo: {

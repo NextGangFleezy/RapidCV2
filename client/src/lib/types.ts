@@ -21,6 +21,7 @@ export interface FileUploadResult {
     type: string;
   };
   parsedData: any;
+  resumeId?: string;
 }
 
 export interface TemplateOption {

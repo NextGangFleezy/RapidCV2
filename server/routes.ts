@@ -140,6 +140,26 @@ router.post('/api/upload-resume', upload.single('file'), async (req: RequestWith
       };
     }
     
+    // Create a resume record in storage
+    const resumeData = {
+      title: parsedData.personalInfo?.fullName || 'Imported Resume',
+      personalInfo: parsedData.personalInfo || {
+        fullName: '',
+        email: '',
+        phone: '',
+        location: ''
+      },
+      summary: parsedData.summary || '',
+      workExperience: parsedData.workExperience || [],
+      education: parsedData.education || [],
+      skills: parsedData.skills || [],
+      projects: parsedData.projects || [],
+      template: 'modern',
+      userId: 'anonymous'
+    };
+
+    const createdResume = await storage.createResume(resumeData);
+
     res.json({
       fileInfo: {
         name: uploadedFile.originalName,
@@ -147,6 +167,7 @@ router.post('/api/upload-resume', upload.single('file'), async (req: RequestWith
         type: uploadedFile.mimeType
       },
       parsedData,
+      resumeId: createdResume.id,
       rawContent: uploadedFile.content
     });
     
