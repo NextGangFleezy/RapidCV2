@@ -2,7 +2,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Download, Eye, ExternalLink, Palette } from 'lucide-react';
+import { Download, Eye, ExternalLink, Palette, FileText, FileImage } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { TEMPLATES } from '@/lib/types';
 import type { ResumeData } from '@shared/schema';
@@ -16,9 +16,10 @@ interface ResumePreviewProps {
 export default function ResumePreview({ data, template = 'modern', onTemplateChange }: ResumePreviewProps) {
   const { toast } = useToast();
 
-  const handleDownload = async () => {
+  const handleDownload = async (format: 'pdf' | 'word') => {
     try {
-      const response = await fetch('/api/export-pdf', {
+      const endpoint = format === 'pdf' ? '/api/export-pdf' : '/api/export-word';
+      const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -32,7 +33,8 @@ export default function ResumePreview({ data, template = 'modern', onTemplateCha
         const a = document.createElement('a');
         a.style.display = 'none';
         a.href = url;
-        a.download = `${data.personalInfo.fullName}_Resume.pdf`;
+        const extension = format === 'pdf' ? 'pdf' : 'docx';
+        a.download = `${data.personalInfo.fullName}_Resume.${extension}`;
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
@@ -40,19 +42,22 @@ export default function ResumePreview({ data, template = 'modern', onTemplateCha
 
         toast({
           title: 'Download Started',
-          description: 'Your resume PDF is being downloaded.',
+          description: `Your resume ${format.toUpperCase()} is being downloaded.`,
         });
       } else {
-        throw new Error('Failed to generate PDF');
+        throw new Error(`Failed to generate ${format.toUpperCase()}`);
       }
     } catch (error) {
       toast({
         title: 'Download Failed',
-        description: 'There was an error generating your resume PDF.',
+        description: `There was an error generating your resume ${format.toUpperCase()}.`,
         variant: 'destructive',
       });
     }
   };
+
+  const handleDownloadWord = () => handleDownload('word');
+  const handleDownloadPDF = () => handleDownload('pdf');
 
   const formatDate = (dateStr: string, current: boolean = false) => {
     if (current) return 'Present';
@@ -309,9 +314,13 @@ export default function ResumePreview({ data, template = 'modern', onTemplateCha
               </Select>
             </div>
           )}
-          <Button variant="outline" size="sm" onClick={handleDownload}>
-            <Download className="h-4 w-4 mr-2" />
-            Download PDF
+          <Button variant="outline" size="sm" onClick={handleDownloadWord}>
+            <FileText className="h-4 w-4 mr-2" />
+            Word
+          </Button>
+          <Button variant="outline" size="sm" onClick={handleDownloadPDF}>
+            <FileImage className="h-4 w-4 mr-2" />
+            PDF
           </Button>
           <Button variant="outline" size="sm">
             <Eye className="h-4 w-4" />

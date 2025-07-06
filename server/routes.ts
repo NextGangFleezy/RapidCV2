@@ -15,6 +15,7 @@ import {
 import { analyzeJobDescription, parseResumeContent, analyzeATSCompatibility } from './services/openai';
 import { upload, extractTextFromFile, validateFileUpload } from './services/fileProcessor';
 import { generatePDF } from './services/pdfGenerator';
+import { generateWordDocument } from './services/wordGenerator';
 
 const router = express.Router();
 
@@ -292,6 +293,24 @@ router.post('/api/export-pdf', async (req, res) => {
     }
     console.error('PDF export error:', error);
     res.status(500).json({ error: 'Failed to generate PDF' });
+  }
+});
+
+// Export resume as Word document
+router.post('/api/export-word', async (req, res) => {
+  try {
+    const resumeData = resumeDataSchema.parse(req.body);
+    const wordBuffer = await generateWordDocument(resumeData);
+    
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+    res.setHeader('Content-Disposition', `attachment; filename="${resumeData.personalInfo.fullName}_Resume.docx"`);
+    res.send(wordBuffer);
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({ error: 'Validation error', details: error.errors });
+    }
+    console.error('Word export error:', error);
+    res.status(500).json({ error: 'Failed to generate Word document' });
   }
 });
 
