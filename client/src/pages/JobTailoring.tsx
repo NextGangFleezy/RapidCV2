@@ -135,6 +135,8 @@ export default function JobTailoring() {
   const handleTemplateChange = async (templateId: string) => {
     if (!id) return;
     
+    console.log('Template change requested:', templateId);
+    
     try {
       // Update the resume template immediately
       const response = await fetch(`/api/resumes/${id}`, {
@@ -143,16 +145,27 @@ export default function JobTailoring() {
         body: JSON.stringify({ template: templateId })
       });
       
+      console.log('Template update response:', response.status);
+      
       if (response.ok) {
         // Invalidate cache to refresh the data
         queryClient.invalidateQueries({ queryKey: [`/api/resumes/${id}`] });
         
         toast({
           title: 'Template Updated',
-          description: 'Resume template has been changed successfully.',
+          description: `Resume template changed to ${templateId}.`,
+        });
+      } else {
+        const errorData = await response.json();
+        console.error('Template update failed:', errorData);
+        toast({
+          title: 'Update Failed',
+          description: 'Failed to update template. Please try again.',
+          variant: 'destructive',
         });
       }
     } catch (error) {
+      console.error('Template change error:', error);
       toast({
         title: 'Update Failed',
         description: 'Failed to update template. Please try again.',

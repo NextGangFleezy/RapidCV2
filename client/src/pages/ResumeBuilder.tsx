@@ -171,11 +171,13 @@ export default function ResumeBuilder() {
   };
 
   const handleTemplateChange = (templateId: string) => {
+    console.log('ResumeBuilder template change:', templateId);
     const updatedData = { ...resumeData, template: templateId };
     setResumeData(updatedData);
     
     // Auto-save the template change
     if (id) {
+      console.log('Auto-saving template change...');
       saveResumeMutation.mutate(updatedData);
     }
   };

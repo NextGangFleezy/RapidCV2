@@ -72,6 +72,7 @@ export default function ResumePreview({ data, template = 'modern', onTemplateCha
   };
 
   const renderTemplateContent = () => {
+    console.log('Rendering template:', template);
     switch (template) {
       case 'modern':
         return renderModernTemplate();
@@ -84,13 +85,15 @@ export default function ResumePreview({ data, template = 'modern', onTemplateCha
       case 'executive':
         return renderExecutiveTemplate();
       default:
+        console.log('Unknown template, falling back to modern:', template);
         return renderModernTemplate();
     }
   };
 
   const renderModernTemplate = () => (
     <div className="bg-white text-gray-900 p-8 min-h-full">
-      <div className="border-l-4 border-blue-600 pl-6 mb-8">
+      {/* Modern Template Header with Blue Accent */}
+      <div className="border-l-4 border-blue-600 pl-6 mb-8 bg-blue-50/50 p-4 rounded-r-lg">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">{data.personalInfo.fullName}</h1>
         <div className="text-blue-600 space-y-1">
           <p>{data.personalInfo.email}</p>
@@ -104,9 +107,10 @@ export default function ResumePreview({ data, template = 'modern', onTemplateCha
 
   const renderClassicTemplate = () => (
     <div className="bg-white text-gray-900 p-8 min-h-full">
-      <div className="text-center border-b-2 border-gray-300 pb-6 mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-3">{data.personalInfo.fullName}</h1>
-        <div className="text-gray-600 space-x-4">
+      {/* Classic Template Header with Formal Styling */}
+      <div className="text-center border-b-2 border-gray-800 pb-6 mb-8 bg-gray-50 p-6 rounded-lg">
+        <h1 className="text-4xl font-serif font-bold text-gray-900 mb-3">{data.personalInfo.fullName}</h1>
+        <div className="text-gray-700 space-x-4 text-lg">
           <span>{data.personalInfo.email}</span>
           <span>•</span>
           <span>{data.personalInfo.phone}</span>
@@ -124,12 +128,13 @@ export default function ResumePreview({ data, template = 'modern', onTemplateCha
 
   const renderCreativeTemplate = () => (
     <div className="bg-gradient-to-br from-purple-50 to-blue-50 text-gray-900 p-8 min-h-full">
-      <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-6 rounded-lg mb-8">
-        <h1 className="text-3xl font-bold mb-3">{data.personalInfo.fullName}</h1>
-        <div className="space-y-1 text-purple-100">
-          <p>{data.personalInfo.email}</p>
-          <p>{data.personalInfo.phone}</p>
-          {data.personalInfo.location && <p>{data.personalInfo.location}</p>}
+      {/* Creative Template Header with Gradient Design */}
+      <div className="bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 text-white p-8 rounded-2xl mb-8 shadow-lg">
+        <h1 className="text-4xl font-bold mb-4 tracking-wide">{data.personalInfo.fullName}</h1>
+        <div className="space-y-2 text-purple-100 text-lg">
+          <p className="flex items-center gap-2">📧 {data.personalInfo.email}</p>
+          <p className="flex items-center gap-2">📱 {data.personalInfo.phone}</p>
+          {data.personalInfo.location && <p className="flex items-center gap-2">📍 {data.personalInfo.location}</p>}
         </div>
       </div>
       {renderCommonSections()}
@@ -137,13 +142,20 @@ export default function ResumePreview({ data, template = 'modern', onTemplateCha
   );
 
   const renderMinimalistTemplate = () => (
-    <div className="bg-white text-gray-900 p-8 min-h-full font-light">
-      <div className="mb-12">
-        <h1 className="text-4xl font-extralight text-gray-900 mb-4 tracking-wide">{data.personalInfo.fullName}</h1>
-        <div className="text-gray-500 text-sm space-x-6">
+    <div className="bg-gray-50 text-gray-900 p-12 min-h-full font-light">
+      {/* Minimalist Template Header with Clean Typography */}
+      <div className="mb-16 border-b border-gray-200 pb-8">
+        <h1 className="text-5xl font-thin text-gray-900 mb-6 tracking-widest uppercase">{data.personalInfo.fullName}</h1>
+        <div className="text-gray-400 text-xs space-x-8 uppercase tracking-wide">
           <span>{data.personalInfo.email}</span>
+          <span>|</span>
           <span>{data.personalInfo.phone}</span>
-          {data.personalInfo.location && <span>{data.personalInfo.location}</span>}
+          {data.personalInfo.location && (
+            <>
+              <span>|</span>
+              <span>{data.personalInfo.location}</span>
+            </>
+          )}
         </div>
       </div>
       {renderCommonSections()}
@@ -152,12 +164,25 @@ export default function ResumePreview({ data, template = 'modern', onTemplateCha
 
   const renderExecutiveTemplate = () => (
     <div className="bg-white text-gray-900 p-8 min-h-full">
-      <div className="bg-gray-900 text-white p-8 -m-8 mb-8">
-        <h1 className="text-3xl font-bold mb-3">{data.personalInfo.fullName}</h1>
-        <div className="text-gray-300 space-y-1">
-          <p>{data.personalInfo.email}</p>
-          <p>{data.personalInfo.phone}</p>
-          {data.personalInfo.location && <p>{data.personalInfo.location}</p>}
+      {/* Executive Template Header with Professional Dark Header */}
+      <div className="bg-gradient-to-r from-slate-900 to-slate-700 text-white p-10 -m-8 mb-8 relative">
+        <div className="absolute top-4 right-4 w-20 h-20 bg-white/10 rounded-full"></div>
+        <h1 className="text-4xl font-bold mb-4 tracking-tight">{data.personalInfo.fullName}</h1>
+        <div className="text-slate-200 space-y-2 text-lg">
+          <p className="flex items-center gap-3">
+            <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
+            {data.personalInfo.email}
+          </p>
+          <p className="flex items-center gap-3">
+            <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
+            {data.personalInfo.phone}
+          </p>
+          {data.personalInfo.location && (
+            <p className="flex items-center gap-3">
+              <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
+              {data.personalInfo.location}
+            </p>
+          )}
         </div>
       </div>
       {renderCommonSections()}
