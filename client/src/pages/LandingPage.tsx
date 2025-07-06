@@ -106,14 +106,15 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-slate-50 to-blue-50 py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative py-20 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-indigo-900/20"></div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h1 className="text-5xl md:text-6xl font-bold text-slate-900 mb-6 leading-tight">
+            <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-6 leading-tight">
               Create. Match. Tailor.<br />
-              <span className="text-primary">Land the Job.</span>
+              <span className="text-gradient">Land the Job.</span>
             </h1>
-            <p className="text-xl text-slate-600 mb-8 max-w-3xl mx-auto">
+            <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
               AI-powered resume builder that helps you create professional resumes and tailor them for specific job applications. Upload your existing resume or start from scratch.
             </p>
             
@@ -150,30 +151,30 @@ export default function LandingPage() {
 
           {/* Demo Interface Preview */}
           <div className="max-w-6xl mx-auto">
-            <Card className="overflow-hidden shadow-2xl">
-              <div className="bg-slate-800 px-6 py-4 flex items-center space-x-2">
+            <Card className="overflow-hidden shadow-2xl card-enhanced border">
+              <div className="bg-card px-6 py-4 flex items-center space-x-2 border-b border-border">
                 <div className="w-3 h-3 bg-red-500 rounded-full"></div>
                 <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
                 <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                <span className="text-slate-400 text-sm ml-4">Replit 2.0 - Resume Builder</span>
+                <span className="text-muted-foreground text-sm ml-4">Rapid CV - Resume Builder</span>
               </div>
               
               <div className="grid lg:grid-cols-2 gap-0">
-                <div className="p-8 border-r border-slate-200">
-                  <h3 className="text-lg font-semibold mb-4">Build Your Resume</h3>
-                  <div className="border-2 border-dashed border-slate-300 rounded-xl p-6 text-center mb-6 hover:border-primary/50 transition-colors">
-                    <Upload className="h-8 w-8 text-slate-400 mx-auto mb-3" />
-                    <p className="text-slate-600 font-medium">Drop your resume here</p>
-                    <p className="text-sm text-slate-500">PDF, DOCX up to 10MB</p>
+                <div className="p-8 border-r border-border">
+                  <h3 className="text-lg font-semibold mb-4 text-foreground">Build Your Resume</h3>
+                  <div className="border-2 border-dashed border-border rounded-xl p-6 text-center mb-6 hover:border-primary/50 transition-colors">
+                    <Upload className="h-8 w-8 text-muted-foreground mx-auto mb-3" />
+                    <p className="text-foreground font-medium">Drop your resume here</p>
+                    <p className="text-sm text-muted-foreground">PDF, DOCX up to 10MB</p>
                   </div>
                   <div className="space-y-4">
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-2">Full Name</label>
-                      <input type="text" className="w-full px-4 py-3 border border-slate-300 rounded-lg" placeholder="John Doe" readOnly />
+                      <label className="block text-sm font-medium text-foreground mb-2">Full Name</label>
+                      <input type="text" className="w-full px-4 py-3 bg-input border border-border rounded-lg text-foreground" placeholder="John Doe" readOnly />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-2">Professional Summary</label>
-                      <textarea className="w-full px-4 py-3 border border-slate-300 rounded-lg h-24 resize-none" placeholder="Experienced software developer..." readOnly />
+                      <label className="block text-sm font-medium text-foreground mb-2">Professional Summary</label>
+                      <textarea className="w-full px-4 py-3 bg-input border border-border rounded-lg h-24 resize-none text-foreground" placeholder="Experienced software developer..." readOnly />
                     </div>
                   </div>
                 </div>
@@ -219,23 +220,24 @@ export default function LandingPage() {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 relative">
+        <div className="absolute inset-0 bg-gradient-to-t from-purple-900/10 to-transparent"></div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-slate-900 mb-4">Powerful Features for Modern Job Seekers</h2>
-            <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+            <h2 className="text-4xl font-bold text-foreground mb-4">Powerful Features for Modern Job Seekers</h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Everything you need to create, optimize, and tailor professional resumes for any job application.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {features.map((feature, index) => (
-              <Card key={index} className="p-8 hover:shadow-lg transition-shadow">
+              <Card key={index} className="p-8 hover:shadow-lg transition-all card-enhanced border hover:border-primary/50">
                 <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-6 bg-gradient-to-br ${feature.color}`}>
                   <feature.icon className="h-6 w-6 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-4">{feature.title}</h3>
-                <p className="text-slate-600 mb-4">{feature.description}</p>
+                <h3 className="text-xl font-bold text-foreground mb-4">{feature.title}</h3>
+                <p className="text-muted-foreground mb-4">{feature.description}</p>
                 <div className={`flex items-center ${feature.textColor} font-medium`}>
                   <span>Learn more</span>
                   <ArrowRight className="ml-2 h-4 w-4" />

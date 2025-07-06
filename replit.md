@@ -113,6 +113,7 @@ Changelog:
 - July 04, 2025. Removed file upload feature from Resume Builder - simplified interface to focus on manual resume building, template selection, and ATS scanning capabilities
 - July 06, 2025. Restored file upload functionality after user feedback - upload feature now available in dedicated Upload tab
 - July 06, 2025. Implemented live template switching in resume preview - added template selector dropdown with real-time preview updates and auto-save functionality
+- July 06, 2025. Updated color scheme to vibrant dark theme with professional gradients - replaced plain white background with modern blue/purple gradient, added glass morphism effects, enhanced navigation with translucent styling
 
 ## User Preferences
 
