@@ -111,6 +111,8 @@ Changelog:
 - July 04, 2025. Added ATS (Applicant Tracking System) compatibility scanner feature with comprehensive analysis including overall score, keyword density, format compliance, issues detection, and improvement recommendations
 - July 04, 2025. Enhanced date integrity preservation in AI optimization - strengthened prompts and logic to ensure employment dates, company names, and position titles remain exactly unchanged during resume enhancement
 - July 04, 2025. Removed file upload feature from Resume Builder - simplified interface to focus on manual resume building, template selection, and ATS scanning capabilities
+- July 06, 2025. Restored file upload functionality after user feedback - upload feature now available in dedicated Upload tab
+- July 06, 2025. Implemented live template switching in resume preview - added template selector dropdown with real-time preview updates and auto-save functionality
 
 ## User Preferences
 

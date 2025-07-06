@@ -132,31 +132,33 @@ export default function JobTailoring() {
     return getCurrentResumeData();
   };
 
-  const handleTemplateChange = (templateId: string) => {
+  const handleTemplateChange = async (templateId: string) => {
     if (!id) return;
     
-    // Update the resume template
-    const updateMutation = {
-      mutationFn: async () => {
-        const response = await apiRequest('PATCH', `/api/resumes/${id}`, { template: templateId });
-        if (!response.ok) {
-          throw new Error('Failed to update template');
-        }
-        return response.json();
-      },
-      onSuccess: () => {
+    try {
+      // Update the resume template immediately
+      const response = await fetch(`/api/resumes/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ template: templateId })
+      });
+      
+      if (response.ok) {
+        // Invalidate cache to refresh the data
         queryClient.invalidateQueries({ queryKey: [`/api/resumes/${id}`] });
+        
+        toast({
+          title: 'Template Updated',
+          description: 'Resume template has been changed successfully.',
+        });
       }
-    };
-    
-    // Execute the mutation
-    fetch(`/api/resumes/${id}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ template: templateId })
-    }).then(() => {
-      queryClient.invalidateQueries({ queryKey: [`/api/resumes/${id}`] });
-    });
+    } catch (error) {
+      toast({
+        title: 'Update Failed',
+        description: 'Failed to update template. Please try again.',
+        variant: 'destructive',
+      });
+    }
   };
 
   if (isLoading) {

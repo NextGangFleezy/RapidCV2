@@ -49,23 +49,27 @@ export default function ResumeBuilder() {
   // Load existing resume data
   useEffect(() => {
     if (existingResume && !isLoading) {
-      setResumeData({
-        personalInfo: existingResume.personalInfo || {
-          fullName: '',
-          email: '',
-          phone: '',
-          location: '',
-          website: '',
-          linkedin: '',
-          github: '',
-        },
-        summary: existingResume.summary || '',
-        workExperience: existingResume.workExperience || [],
-        education: existingResume.education || [],
-        skills: existingResume.skills || [],
-        projects: existingResume.projects || [],
-        template: existingResume.template || 'modern',
-      });
+      const resume = existingResume as Resume;
+      // Only update if we have actual resume data (not empty object)
+      if (resume.id) {
+        setResumeData({
+          personalInfo: resume.personalInfo || {
+            fullName: '',
+            email: '',
+            phone: '',
+            location: '',
+            website: '',
+            linkedin: '',
+            github: '',
+          },
+          summary: resume.summary || '',
+          workExperience: resume.workExperience || [],
+          education: resume.education || [],
+          skills: resume.skills || [],
+          projects: resume.projects || [],
+          template: resume.template || 'modern',
+        });
+      }
     }
   }, [existingResume, isLoading]);
 
@@ -157,7 +161,13 @@ export default function ResumeBuilder() {
   };
 
   const handleTemplateChange = (templateId: string) => {
-    setResumeData(prev => ({ ...prev, template: templateId }));
+    const updatedData = { ...resumeData, template: templateId };
+    setResumeData(updatedData);
+    
+    // Auto-save the template change
+    if (id) {
+      saveResumeMutation.mutate(updatedData);
+    }
   };
 
   const navigateToTailoring = () => {
