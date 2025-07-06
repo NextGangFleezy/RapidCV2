@@ -114,6 +114,7 @@ Changelog:
 - July 06, 2025. Restored file upload functionality after user feedback - upload feature now available in dedicated Upload tab
 - July 06, 2025. Implemented live template switching in resume preview - added template selector dropdown with real-time preview updates and auto-save functionality
 - July 06, 2025. Updated color scheme to vibrant dark theme with professional gradients - replaced plain white background with modern blue/purple gradient, added glass morphism effects, enhanced navigation with translucent styling
+- July 06, 2025. Enhanced template previewer with interactive functionality - added hover effects, template-specific visual mockups, real-time switching, and debugging fixes for file upload flow to properly create resume records in storage
 
 ## User Preferences
 
