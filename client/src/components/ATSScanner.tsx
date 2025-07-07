@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { AlertCircle, CheckCircle2, FileSearch, Target, TrendingUp } from 'lucide-react';
+import { AlertCircle, CheckCircle2, FileSearch, Target, TrendingUp, Wand2, RefreshCw } from 'lucide-react';
 import { apiRequest } from '@/lib/queryClient';
+import { useToast } from '@/hooks/use-toast';
 import type { ATSAnalysis } from '@shared/schema';
 
 interface ATSScannerProps {
@@ -15,16 +16,69 @@ interface ATSScannerProps {
 
 export default function ATSScanner({ resumeId }: ATSScannerProps) {
   const [analysis, setAnalysis] = useState<ATSAnalysis | null>(null);
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   const scanMutation = useMutation({
     mutationFn: async (): Promise<ATSAnalysis> => {
-      return await apiRequest('/api/ats-scan', {
-        method: 'POST',
-        body: { resumeId }
-      });
+      const response = await apiRequest('POST', '/api/ats-scan', { resumeId });
+      
+      if (!response.ok) {
+        throw new Error('Failed to analyze ATS compatibility');
+      }
+      
+      return response.json();
     },
     onSuccess: (data: ATSAnalysis) => {
       setAnalysis(data);
+      toast({
+        title: 'ATS Scan Complete',
+        description: `Your resume scored ${data.overallScore}/100 for ATS compatibility.`
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: 'ATS Scan Failed',
+        description: error instanceof Error ? error.message : 'Failed to analyze ATS compatibility',
+        variant: 'destructive',
+      });
+    }
+  });
+
+  // ATS Enhancement mutation - applies ATS improvements to resume
+  const enhanceMutation = useMutation({
+    mutationFn: async (): Promise<any> => {
+      if (!analysis) throw new Error('No ATS analysis available');
+      
+      const response = await apiRequest('POST', '/api/enhance-ats', { 
+        resumeId,
+        atsAnalysis: analysis
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to apply ATS enhancements');
+      }
+      
+      return response.json();
+    },
+    onSuccess: () => {
+      // Invalidate queries to refresh resume data
+      queryClient.invalidateQueries({ queryKey: [`/api/resumes/${resumeId}`] });
+      
+      toast({
+        title: 'ATS Enhancements Applied',
+        description: 'Your resume has been optimized for better ATS compatibility.',
+      });
+      
+      // Trigger a new ATS scan to show improvements
+      scanMutation.mutate();
+    },
+    onError: (error) => {
+      toast({
+        title: 'Enhancement Failed',
+        description: error instanceof Error ? error.message : 'Failed to apply ATS enhancements',
+        variant: 'destructive',
+      });
     }
   });
 
@@ -163,6 +217,53 @@ export default function ATSScanner({ resumeId }: ATSScannerProps) {
                       <span className="text-sm">{recommendation}</span>
                     </div>
                   ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Enhancement Actions */}
+          {analysis.overallScore < 90 && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <Wand2 className="h-5 w-5 text-purple-600" />
+                  <span>ATS Enhancement</span>
+                </CardTitle>
+                <CardDescription>
+                  Automatically apply ATS improvements to optimize your resume for better compatibility
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex space-x-3">
+                  <Button
+                    onClick={() => enhanceMutation.mutate()}
+                    disabled={enhanceMutation.isPending}
+                    className="flex-1 bg-purple-600 hover:bg-purple-700"
+                  >
+                    {enhanceMutation.isPending ? (
+                      <>
+                        <div className="loading-spinner mr-2" />
+                        Applying Enhancements...
+                      </>
+                    ) : (
+                      <>
+                        <Wand2 className="mr-2 h-4 w-4" />
+                        Apply ATS Improvements
+                      </>
+                    )}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => scanMutation.mutate()}
+                    disabled={scanMutation.isPending}
+                  >
+                    <RefreshCw className="mr-2 h-4 w-4" />
+                    Re-scan
+                  </Button>
+                </div>
+                <div className="text-xs text-muted-foreground">
+                  Enhancement will improve keyword density, format compliance, and address identified issues while preserving all original content.
                 </div>
               </CardContent>
             </Card>

@@ -12,7 +12,7 @@ import {
   insertResumeSchema,
   type ResumeData 
 } from '@shared/schema';
-import { analyzeJobDescription, parseResumeContent, analyzeATSCompatibility } from './services/openai';
+import { analyzeJobDescription, parseResumeContent, analyzeATSCompatibility, enhanceResumeForATS } from './services/openai';
 import { upload, extractTextFromFile, validateFileUpload } from './services/fileProcessor';
 import { generatePDF } from './services/pdfGenerator';
 import { generateWordDocument } from './services/wordGenerator';
@@ -351,6 +351,62 @@ router.post('/api/export-word', async (req, res) => {
   } catch (error) {
     console.error('Word export error:', error);
     res.status(500).json({ error: 'Failed to generate Word document' });
+  }
+});
+
+// ATS Enhancement - Applies ATS improvements to resume
+router.post('/api/enhance-ats', async (req, res) => {
+  try {
+    const { resumeId, atsAnalysis } = z.object({ 
+      resumeId: z.string(),
+      atsAnalysis: z.object({
+        overallScore: z.number(),
+        issues: z.array(z.string()),
+        recommendations: z.array(z.string()),
+        keywordDensity: z.number(),
+        formatCompliance: z.array(z.string())
+      })
+    }).parse(req.body);
+    
+    // Get resume data
+    const resume = await storage.getResume(resumeId);
+    if (!resume) {
+      return res.status(404).json({ error: 'Resume not found' });
+    }
+    
+    const resumeData: ResumeData = {
+      personalInfo: resume.personalInfo,
+      summary: resume.summary || '',
+      workExperience: resume.workExperience || [],
+      education: resume.education || [],
+      skills: resume.skills || [],
+      projects: resume.projects || [],
+      template: resume.template || 'modern'
+    };
+    
+    // Apply ATS enhancements using AI
+    const enhancedResumeData = await enhanceResumeForATS(resumeData, atsAnalysis);
+    
+    // Update resume in storage
+    const updatedResume = await storage.updateResume(resumeId, {
+      summary: enhancedResumeData.summary,
+      workExperience: enhancedResumeData.workExperience,
+      education: enhancedResumeData.education,
+      skills: enhancedResumeData.skills,
+      projects: enhancedResumeData.projects,
+    });
+    
+    res.json({ 
+      message: 'ATS enhancements applied successfully',
+      resume: updatedResume 
+    });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({ error: 'Validation error', details: error.errors });
+    }
+    console.error('ATS enhancement error:', error);
+    const message = error instanceof Error ? error.message : 'Unknown error occurred';
+    res.status(500).json({ error: message });
   }
 });
 

@@ -11,6 +11,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '@/lib/queryClient';
 import ResumePreview from '@/components/ResumePreview';
+import ATSScanner from '@/components/ATSScanner';
 import { 
   ArrowLeft, Wand2, CheckCircle, AlertCircle, Target, 
   Brain, TrendingUp, FileText, Download, Lightbulb,
@@ -28,6 +29,7 @@ export default function JobTailoring() {
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [showOptimized, setShowOptimized] = useState(false);
+  const [showATSScanner, setShowATSScanner] = useState(false);
 
   // Fetch resume data
   const { data: resume, isLoading } = useQuery<Resume>({
@@ -51,10 +53,11 @@ export default function JobTailoring() {
     onSuccess: (result: AnalysisResult) => {
       setAnalysisResult(result);
       setShowOptimized(true);
+      setShowATSScanner(true);
       
       toast({
         title: 'Analysis Complete',
-        description: 'Your resume has been optimized for this job description.',
+        description: 'Your resume has been optimized for this job description. Run an ATS scan to check compatibility.',
       });
     },
     onError: (error) => {
@@ -485,6 +488,11 @@ export default function JobTailoring() {
                   </div>
                 </div>
               </div>
+            )}
+
+            {/* ATS Scanner - Shows after job analysis */}
+            {showATSScanner && analysisResult && (
+              <ATSScanner resumeId={id!} />
             )}
 
             {/* Help Section */}

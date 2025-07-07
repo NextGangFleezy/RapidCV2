@@ -348,3 +348,78 @@ IMPORTANT: Return ONLY the JSON object with no explanations, markdown formatting
     throw new Error(`Failed to parse resume content: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
 }
+
+export async function enhanceResumeForATS(
+  resumeData: ResumeData,
+  atsAnalysis: { overallScore: number; issues: string[]; recommendations: string[]; keywordDensity: number; formatCompliance: string[] }
+): Promise<ResumeData> {
+  try {
+    // Check if API key is available
+    if (!apiKey) {
+      throw new Error('Anthropic API key not configured');
+    }
+
+    const prompt = `
+You are an ATS optimization expert. Enhance this resume to improve ATS compatibility based on the analysis results.
+
+CURRENT RESUME DATA:
+${JSON.stringify(resumeData, null, 2)}
+
+ATS ANALYSIS RESULTS:
+- Overall Score: ${atsAnalysis.overallScore}/100
+- Keyword Density: ${atsAnalysis.keywordDensity}%
+- Issues Found: ${JSON.stringify(atsAnalysis.issues)}
+- Recommendations: ${JSON.stringify(atsAnalysis.recommendations)}
+- Format Compliance: ${JSON.stringify(atsAnalysis.formatCompliance)}
+
+ENHANCEMENT RULES:
+1. PRESERVE ALL ORIGINAL CONTENT: Never remove or omit any information
+2. ADD ONLY: Only add relevant keywords, improve formatting, and enhance existing content
+3. KEYWORD OPTIMIZATION: Increase keyword density while maintaining natural language
+4. FORMAT IMPROVEMENTS: Improve structure and formatting for better ATS parsing
+5. CONTENT ENHANCEMENT: Enhance existing bullet points with more ATS-friendly language
+6. SKILL AUGMENTATION: Add relevant technical skills that align with existing experience
+7. MAINTAIN AUTHENTICITY: All enhancements must be based on existing experience and skills
+
+SPECIFIC IMPROVEMENTS TO MAKE:
+- Enhance summary with relevant keywords while preserving original meaning
+- Improve work experience descriptions with ATS-friendly terminology
+- Add relevant skills that complement existing skill set
+- Optimize formatting and structure for better ATS parsing
+- Address specific issues identified in the analysis
+
+Return the enhanced resume in the EXACT same JSON structure with these improvements applied.
+
+ENHANCED RESUME DATA:`;
+
+    const response = await anthropic.messages.create({
+      model: DEFAULT_MODEL_STR,
+      max_tokens: 4000,
+      messages: [{ role: 'user', content: prompt }],
+      system: "You are an ATS optimization expert. Return ONLY valid JSON in the exact same structure as the input. Apply enhancements while preserving all original content and maintaining authenticity."
+    });
+
+    const textContent = response.content[0];
+    let jsonText = (textContent as any)?.text || '{}';
+    
+    // Clean up any markdown formatting
+    jsonText = jsonText.replace(/```json\s*/g, '').replace(/```\s*$/g, '').trim();
+    jsonText = jsonText.replace(/[\u0000-\u001F\u007F-\u009F]/g, '');
+    
+    const enhancedData = JSON.parse(jsonText);
+    
+    // Ensure the enhanced data maintains the proper structure
+    return {
+      personalInfo: enhancedData.personalInfo || resumeData.personalInfo,
+      summary: enhancedData.summary || resumeData.summary,
+      workExperience: enhancedData.workExperience || resumeData.workExperience,
+      education: enhancedData.education || resumeData.education,
+      skills: enhancedData.skills || resumeData.skills,
+      projects: enhancedData.projects || resumeData.projects,
+      template: resumeData.template // Keep original template
+    };
+  } catch (error) {
+    console.error('Error enhancing resume for ATS:', error);
+    throw new Error('Failed to enhance resume for ATS compatibility');
+  }
+}
