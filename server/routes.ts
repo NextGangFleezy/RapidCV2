@@ -234,13 +234,17 @@ router.post('/api/analyze-job', async (req, res) => {
 // ATS Compatibility Scan
 router.post('/api/ats-scan', async (req, res) => {
   try {
+    console.log('ATS scan endpoint called with body:', req.body);
     const { resumeId } = z.object({ resumeId: z.string() }).parse(req.body);
+    console.log('Resume ID:', resumeId);
     
     // Get resume data
     const resume = await storage.getResume(resumeId);
     if (!resume) {
+      console.log('Resume not found for ID:', resumeId);
       return res.status(404).json({ error: 'Resume not found' });
     }
+    console.log('Resume found, proceeding with ATS analysis...');
     
     const resumeData: ResumeData = {
       personalInfo: resume.personalInfo,
@@ -253,7 +257,9 @@ router.post('/api/ats-scan', async (req, res) => {
     };
     
     // Analyze ATS compatibility
+    console.log('Calling analyzeATSCompatibility...');
     const atsAnalysis = await analyzeATSCompatibility(resumeData);
+    console.log('ATS analysis completed, sending response...');
     
     res.json(atsAnalysis);
   } catch (error) {
