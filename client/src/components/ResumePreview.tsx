@@ -18,8 +18,8 @@ export default function ResumePreview({ data, template = 'modern', onTemplateCha
 
   const handleDownload = async (format: 'pdf' | 'word') => {
     try {
-      const endpoint = format === 'pdf' ? '/export-pdf' : '/export-word';
-      const response = await fetch(`${import.meta.env.VITE_API_URL}${endpoint}`, {
+      const endpoint = format === 'pdf' ? '/api/export-pdf' : '/api/export-word';
+      const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

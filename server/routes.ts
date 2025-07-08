@@ -11,7 +11,7 @@ import {
   jobDescriptionSchema,
   insertResumeSchema,
   type ResumeData 
-} from '../shared/schema';
+} from '@shared/schema';
 import { analyzeJobDescription, parseResumeContent, analyzeATSCompatibility, enhanceResumeForATS } from './services/openai';
 import { upload, extractTextFromFile, validateFileUpload } from './services/fileProcessor';
 import { generatePDF } from './services/pdfGenerator';

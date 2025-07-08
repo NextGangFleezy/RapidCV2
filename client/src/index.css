@@ -52,11 +52,11 @@
 
 @layer base {
   * {
-    border-color: var(--border);
+    @apply border-border;
   }
 
   body {
-    @apply font-sans antialiased;
+    @apply font-sans antialiased text-foreground;
     background: var(--background-gradient);
     min-height: 100vh;
   }

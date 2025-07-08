@@ -8,21 +8,17 @@ import Contact from '@/pages/Contact';
 import NotFound from '@/pages/not-found';
 
 function App() {
-  console.log('App component rendered');
-  
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+    <div className="min-h-screen bg-background">
       <Navigation />
-      <main className="relative">
-        <Switch>
-          <Route path="/" component={LandingPage} />
-          <Route path="/builder" component={ResumeBuilder} />
-          <Route path="/builder/:id" component={ResumeBuilder} />
-          <Route path="/tailor/:id" component={JobTailoring} />
-          <Route path="/contact" component={Contact} />
-          <Route component={NotFound} />
-        </Switch>
-      </main>
+      <Switch>
+        <Route path="/" component={LandingPage} />
+        <Route path="/builder" component={ResumeBuilder} />
+        <Route path="/builder/:id" component={ResumeBuilder} />
+        <Route path="/tailor/:id" component={JobTailoring} />
+        <Route path="/contact" component={Contact} />
+        <Route component={NotFound} />
+      </Switch>
       <Toaster />
     </div>
   );

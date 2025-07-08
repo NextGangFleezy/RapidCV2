@@ -6,24 +6,22 @@ Replit 2.0 is a full-stack SaaS platform that helps users create and optimize re
 
 ## System Architecture
 
-### Frontend Architecture (/client)
+### Frontend Architecture
 - **Framework**: React 18 with TypeScript
 - **Styling**: Tailwind CSS with shadcn/ui component library
 - **Routing**: Wouter (lightweight React router)
 - **State Management**: TanStack Query (React Query) for server state
 - **Form Handling**: React Hook Form with Zod validation
 - **Build Tool**: Vite for fast development and optimized builds
-- **Environment**: Uses VITE_API_URL for flexible API configuration
 
-### Backend Architecture (/server)
+### Backend Architecture
 - **Runtime**: Node.js with Express.js framework
 - **Language**: TypeScript with ES modules
 - **Storage**: In-memory storage (MemStorage) for MVP
 - **AI Integration**: Anthropic Claude API (claude-sonnet-4-20250514 model)
 - **File Processing**: Support for PDF and DOCX file uploads with text extraction
 - **PDF Generation**: Puppeteer for server-side PDF creation
-- **CORS**: Standard cors package implementation
-- **Static Serving**: Production-ready static file serving for deployment
+- **Server**: Simplified Express setup with CORS and static file serving
 
 ## Key Components
 
@@ -120,12 +118,6 @@ Changelog:
 - July 07, 2025. Successfully resolved ATS scanner timeout issues and implemented comprehensive Claude AI integration - ATS analysis now provides realistic scoring (45-85/100), detailed issue identification, and actionable recommendations with proper keyword density analysis
 - July 07, 2025. Completed ATS enhancement workflow with automatic resume optimization - system can now scan resumes, identify improvement areas, and apply AI-powered enhancements including skill expansion, summary enhancement, and experience optimization while preserving content integrity
 - July 08, 2025. Finalized comprehensive Vercel deployment preparation - created api/index.ts serverless function, optimized vercel.json configuration, fixed file upload limits for serverless environment, created deployment verification system, and confirmed all features working correctly for production deployment
-- July 08, 2025. Fixed port configuration issues for Vercel deployment - updated server to use dynamic PORT environment variable instead of hardcoded port 5000, improved host binding configuration for better compatibility with different deployment environments, resolved tsx dependency issues for proper application startup
-- July 08, 2025. Updated Vercel deployment configuration for client/server structure - modified vercel.json to properly handle /client (frontend) and /server (backend) directories, updated API routes to point to server/index.ts, configured static build for client/index.html, ensuring proper separation of frontend and backend for serverless deployment
-- July 08, 2025. Restructured repository for proper client/server separation - created separate package.json files for client and server directories, moved frontend config files to client/, updated vercel.json to build from client directory, configured proper dependency management with frontend dependencies in client/package.json and backend dependencies in server/package.json
-- July 08, 2025. Simplified Vercel configuration to frontend-only deployment - updated vercel.json to only build static site from client directory, removed backend serverless functions, streamlined routing to serve all requests from client build output
-- July 08, 2025. Completed final restructuring and deployment preparation - replaced custom CORS implementation with standard cors package, updated all frontend fetch calls to use VITE_API_URL environment variable, fixed Tailwind CSS configuration issues, simplified server structure following clean architecture patterns, confirmed React application rendering and hot reloading functionality working correctly
-- July 08, 2025. Successfully resolved all functionality issues after restructuring - fixed API connectivity by correcting VITE_API_URL environment variable, resolved schema validation mismatches between frontend and backend, confirmed core features working including resume CRUD operations, AI-powered job analysis with Claude, ATS compatibility scanning, and template system functionality
 
 ## User Preferences
 
