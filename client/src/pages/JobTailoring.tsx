@@ -17,7 +17,7 @@ import {
   Brain, TrendingUp, FileText, Download, Lightbulb,
   Users, Award, Zap
 } from 'lucide-react';
-import type { Resume, ResumeData } from '@shared/schema';
+import type { Resume, ResumeData } from '@/lib/types-frontend';
 import type { AnalysisResult } from '@/lib/types';
 
 export default function JobTailoring() {

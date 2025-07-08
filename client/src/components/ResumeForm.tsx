@@ -11,7 +11,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Plus, Trash2, X } from 'lucide-react';
-import { resumeDataSchema, type ResumeData, type WorkExperience, type Education, type Project } from '@shared/schema';
+import { resumeDataSchema, type ResumeData, type WorkExperience, type Education, type Project } from '@/lib/types-frontend';
 
 interface ResumeFormProps {
   data?: Partial<ResumeData>;

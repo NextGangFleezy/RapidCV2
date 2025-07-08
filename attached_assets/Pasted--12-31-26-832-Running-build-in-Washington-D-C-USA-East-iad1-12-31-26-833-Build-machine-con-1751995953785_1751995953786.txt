@@ -1,0 +1,51 @@
+[12:31:26.832] Running build in Washington, D.C., USA (East) – iad1
+[12:31:26.833] Build machine configuration: 2 cores, 8 GB
+[12:31:26.850] Cloning github.com/NextGangFleezy/RapidCV2 (Branch: main, Commit: d800e5d)
+[12:31:26.861] Skipping build cache, deployment was triggered without cache.
+[12:31:27.253] Cloning completed: 403.000ms
+[12:31:27.285] Found .vercelignore
+[12:31:27.293] Removed 31 ignored files defined in .vercelignore
+[12:31:27.293]   /.git/config
+[12:31:27.293]   /.git/description
+[12:31:27.293]   /.git/FETCH_HEAD
+[12:31:27.293]   /.git/HEAD
+[12:31:27.293]   /.git/hooks/applypatch-msg.sample
+[12:31:27.293]   /.git/hooks/commit-msg.sample
+[12:31:27.293]   /.git/hooks/fsmonitor-watchman.sample
+[12:31:27.294]   /.git/hooks/post-update.sample
+[12:31:27.294]   /.git/hooks/pre-applypatch.sample
+[12:31:27.294]   /.git/hooks/pre-commit.sample
+[12:31:27.571] Running "vercel build"
+[12:31:28.156] Vercel CLI 44.2.13
+[12:31:28.330] WARN! Due to `builds` existing in your configuration file, the Build and Development Settings defined in your Project Settings will not apply. Learn More: https://vercel.link/unused-build-settings
+[12:31:28.783] Installing dependencies...
+[12:32:11.806] 
+[12:32:11.806] added 337 packages in 42s
+[12:32:11.807] 
+[12:32:11.807] 48 packages are looking for funding
+[12:32:11.807]   run `npm fund` for details
+[12:32:11.876] Running "npm run build"
+[12:32:11.989] 
+[12:32:11.990] > rapid-cv-frontend@1.0.0 build
+[12:32:11.990] > vite build
+[12:32:11.990] 
+[12:32:12.273] [36mvite v5.4.19 [32mbuilding for production...[36m[39m
+[12:32:12.562] transforming...
+[12:32:15.495] [32m✓[39m 1702 modules transformed.
+[12:32:15.497] [31mx[39m Build failed in 3.19s
+[12:32:15.498] [31merror during build:
+[12:32:15.498] [31m[vite]: Rollup failed to resolve import "drizzle-orm/pg-core" from "/vercel/path0/shared/schema.ts".
+[12:32:15.498] This is most likely unintended because it can break your application at runtime.
+[12:32:15.498] If you do want to externalize this module explicitly add it to
+[12:32:15.498] `build.rollupOptions.external`[31m
+[12:32:15.498]     at viteWarn (file:///vercel/path0/client/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:65839:17)
+[12:32:15.498]     at onwarn (file:///vercel/path0/client/node_modules/@vitejs/plugin-react/dist/index.mjs:104:9)
+[12:32:15.498]     at onRollupWarning (file:///vercel/path0/client/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:65869:5)
+[12:32:15.498]     at onwarn (file:///vercel/path0/client/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:65534:7)
+[12:32:15.498]     at file:///vercel/path0/client/node_modules/rollup/dist/es/shared/node-entry.js:20805:13
+[12:32:15.498]     at Object.logger [as onLog] (file:///vercel/path0/client/node_modules/rollup/dist/es/shared/node-entry.js:22671:9)
+[12:32:15.498]     at ModuleLoader.handleInvalidResolvedId (file:///vercel/path0/client/node_modules/rollup/dist/es/shared/node-entry.js:21417:26)
+[12:32:15.498]     at file:///vercel/path0/client/node_modules/rollup/dist/es/shared/node-entry.js:21375:26[39m
+[12:32:15.525] Error: Command "npm run build" exited with 1
+[12:32:15.754] 
+[12:32:18.466] Exiting build container

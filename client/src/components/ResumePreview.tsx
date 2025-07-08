@@ -5,7 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Download, Eye, ExternalLink, Palette, FileText, FileImage } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { TEMPLATES } from '@/lib/types';
-import type { ResumeData } from '@shared/schema';
+import type { ResumeData } from '@/lib/types-frontend';
 
 interface ResumePreviewProps {
   data: ResumeData;

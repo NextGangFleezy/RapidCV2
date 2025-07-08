@@ -13,7 +13,7 @@ import ResumePreview from '@/components/ResumePreview';
 import TemplateSelector from '@/components/TemplateSelector';
 import ATSScanner from '@/components/ATSScanner';
 import { Upload, Save, Wand2, ArrowRight, FileText, Brain, FileSearch } from 'lucide-react';
-import type { ResumeData, Resume } from '@shared/schema';
+import type { ResumeData, Resume } from '@/lib/types-frontend';
 import type { FileUploadResult } from '@/lib/types';
 
 export default function ResumeBuilder() {

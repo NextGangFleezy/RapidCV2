@@ -8,7 +8,7 @@ import { Separator } from '@/components/ui/separator';
 import { AlertCircle, CheckCircle2, FileSearch, Target, TrendingUp, Wand2, RefreshCw } from 'lucide-react';
 import { apiRequest } from '@/lib/queryClient';
 import { useToast } from '@/hooks/use-toast';
-import type { ATSAnalysis } from '@shared/schema';
+import type { ATSAnalysis } from '@/lib/types-frontend';
 
 interface ATSScannerProps {
   resumeId: string;
