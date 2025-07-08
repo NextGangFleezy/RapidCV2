@@ -2,6 +2,7 @@ import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Logo } from '@/components/ui/logo';
 import { 
   Rocket, Upload, Brain, Eye, ALargeSmall, FileText, 
   Target, CheckCircle, Star, Code, FileDown, Edit3,
@@ -15,36 +16,36 @@ export default function LandingPage() {
       icon: Brain,
       title: 'AI Job Matching',
       description: 'Paste any job description and our AI will automatically tailor your resume to match key requirements and optimize for ATS systems.',
-      color: 'from-blue-500 to-indigo-600',
-      textColor: 'text-blue-600'
+      color: 'accent-primary',
+      iconColor: 'text-primary'
     },
     {
       icon: Upload,
       title: 'Smart File Import',
       description: 'Upload your existing PDF or Word resume and we\'ll extract all the content automatically. No manual retyping required.',
-      color: 'from-green-500 to-emerald-600',
-      textColor: 'text-green-600'
+      color: 'accent-secondary',
+      iconColor: 'text-secondary'
     },
     {
       icon: Eye,
       title: 'Real-time Preview',
       description: 'See your changes instantly with our live preview. What you see is exactly what recruiters will see in your final PDF.',
-      color: 'from-purple-500 to-violet-600',
-      textColor: 'text-purple-600'
+      color: 'accent-primary',
+      iconColor: 'text-accent'
     },
     {
       icon: ALargeSmall,
       title: 'Professional Templates',
       description: 'Choose from multiple professionally designed templates. Clean, modern layouts that work across all industries.',
-      color: 'from-orange-500 to-amber-600',
-      textColor: 'text-orange-600'
+      color: 'accent-secondary',
+      iconColor: 'text-primary'
     },
     {
       icon: FileText,
       title: 'One-Click Export',
       description: 'Export your resume to high-quality PDF with perfect formatting. Ready to send to any employer or upload to job boards.',
-      color: 'from-red-500 to-pink-600',
-      textColor: 'text-red-600'
+      color: 'accent-primary',
+      iconColor: 'text-secondary'
     },
     {
       icon: Target,
@@ -107,26 +108,28 @@ export default function LandingPage() {
     <div className="min-h-screen">
       {/* Hero Section */}
       <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-indigo-900/20"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-purple-50/30 to-cyan-50/40 dark:from-blue-950/20 dark:via-purple-950/20 dark:to-cyan-950/20"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
+            <div className="flex justify-center mb-8">
+              <Logo size="lg" />
+            </div>
             <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-6 leading-tight">
-              Create. Match. Tailor.<br />
-              <span className="text-gradient">Land the Job.</span>
+              Built for the Job You Want
             </h1>
             <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-              AI-powered resume builder that helps you create professional resumes and tailor them for specific job applications. Upload your existing resume or start from scratch.
+              AI-powered resume builder that tailors your experience to each job application. Create professional resumes, optimize for ATS systems, and land more interviews.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               <Link href="/builder">
-                <Button size="lg" className="bg-primary hover:bg-primary/90 text-lg px-8 py-4">
+                <Button size="lg" className="accent-primary text-white hover:opacity-90 text-lg px-8 py-4 border-0">
                   <Rocket className="mr-2 h-5 w-5" />
                   Start Building Now
                 </Button>
               </Link>
               <Link href="/builder">
-                <Button size="lg" variant="outline" className="text-lg px-8 py-4">
+                <Button size="lg" variant="outline" className="text-lg px-8 py-4 border-2 border-primary text-primary hover:bg-primary/10">
                   <Upload className="mr-2 h-5 w-5" />
                   Upload Existing Resume
                 </Button>
@@ -135,15 +138,15 @@ export default function LandingPage() {
 
             <div className="flex items-center justify-center space-x-8 text-sm text-slate-500">
               <div className="flex items-center">
-                <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+                <CheckCircle className="h-4 w-4 text-primary mr-2" />
                 ATS-Optimized
               </div>
               <div className="flex items-center">
-                <Shield className="h-4 w-4 text-blue-500 mr-2" />
+                <Shield className="h-4 w-4 text-secondary mr-2" />
                 Secure & Private
               </div>
               <div className="flex items-center">
-                <Brain className="h-4 w-4 text-purple-500 mr-2" />
+                <Brain className="h-4 w-4 text-accent mr-2" />
                 AI-Powered
               </div>
             </div>

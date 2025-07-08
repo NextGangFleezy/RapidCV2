@@ -1,8 +1,9 @@
 import { Link, useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
-import { Code, Menu, X } from 'lucide-react';
+import { Menu } from 'lucide-react';
 import { useState } from 'react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Logo } from '@/components/ui/logo';
 
 export default function Navigation() {
   const [location] = useLocation();
@@ -21,14 +22,11 @@ export default function Navigation() {
   };
 
   return (
-    <nav className="bg-card/80 backdrop-blur-md border-b border-border sticky top-0 z-50">
+    <nav className="bg-card/90 backdrop-blur-md border-b border-border sticky top-0 z-50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <Link href="/" className="flex items-center space-x-3">
-            <div className="w-8 h-8 accent-primary rounded-lg flex items-center justify-center">
-              <Code className="h-4 w-4 text-white" />
-            </div>
-            <span className="text-xl font-bold text-foreground">Rapid CV</span>
+          <Link href="/" className="flex items-center">
+            <Logo size="md" />
           </Link>
           
           {/* Desktop Navigation */}
@@ -71,7 +69,7 @@ export default function Navigation() {
                       className={`transition-colors text-lg ${
                         isActive(href) 
                           ? 'text-primary font-medium' 
-                          : 'text-slate-600 hover:text-slate-900'
+                          : 'text-muted-foreground hover:text-foreground'
                       }`}
                     >
                       {label}
