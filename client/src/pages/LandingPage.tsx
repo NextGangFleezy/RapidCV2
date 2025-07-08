@@ -83,26 +83,7 @@ export default function LandingPage() {
     }
   ];
 
-  const testimonials = [
-    {
-      content: 'The AI tailoring feature is incredible. I landed 3 interviews in the first week after optimizing my resume for specific job descriptions.',
-      author: 'Sarah Chen',
-      role: 'Software Engineer at Google',
-      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face'
-    },
-    {
-      content: 'The file upload feature saved me hours. It extracted all my information perfectly and the templates look so professional.',
-      author: 'Marcus Johnson',
-      role: 'Marketing Manager at Stripe',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face'
-    },
-    {
-      content: 'Finally got past the ATS systems! The skill matching feature showed me exactly what keywords I was missing.',
-      author: 'David Rodriguez',
-      role: 'Product Designer at Figma',
-      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face'
-    }
-  ];
+
 
   return (
     <div className="min-h-screen">
@@ -152,73 +133,7 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Demo Interface Preview */}
-          <div className="max-w-6xl mx-auto">
-            <Card className="overflow-hidden shadow-2xl card-enhanced border">
-              <div className="bg-card px-6 py-4 flex items-center space-x-2 border-b border-border">
-                <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                <span className="text-muted-foreground text-sm ml-4">Rapid CV - Resume Builder</span>
-              </div>
-              
-              <div className="grid lg:grid-cols-2 gap-0">
-                <div className="p-8 border-r border-border">
-                  <h3 className="text-lg font-semibold mb-4 text-foreground">Build Your Resume</h3>
-                  <div className="border-2 border-dashed border-border rounded-xl p-6 text-center mb-6 hover:border-primary/50 transition-colors">
-                    <Upload className="h-8 w-8 text-muted-foreground mx-auto mb-3" />
-                    <p className="text-foreground font-medium">Drop your resume here</p>
-                    <p className="text-sm text-muted-foreground">PDF, DOCX up to 10MB</p>
-                  </div>
-                  <div className="space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium text-foreground mb-2">Full Name</label>
-                      <input type="text" className="w-full px-4 py-3 bg-input border border-border rounded-lg text-foreground" placeholder="John Doe" readOnly />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-foreground mb-2">Professional Summary</label>
-                      <textarea className="w-full px-4 py-3 bg-input border border-border rounded-lg h-24 resize-none text-foreground" placeholder="Experienced software developer..." readOnly />
-                    </div>
-                  </div>
-                </div>
 
-                <div className="p-8 bg-slate-50">
-                  <div className="mb-4 flex items-center justify-between">
-                    <h3 className="text-lg font-semibold">Live Preview</h3>
-                    <div className="flex space-x-2">
-                      <Button size="sm" variant="outline">
-                        <FileDown className="h-4 w-4" />
-                      </Button>
-                      <Button size="sm" variant="outline">
-                        <Eye className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-                  
-                  <div className="bg-white rounded-lg shadow-sm p-6 border h-96 overflow-hidden">
-                    <div className="text-center mb-4">
-                      <h4 className="text-xl font-bold text-slate-900">John Doe</h4>
-                      <p className="text-slate-600">Software Developer</p>
-                      <p className="text-sm text-slate-500">john.doe@email.com | (555) 123-4567</p>
-                    </div>
-                    <div className="space-y-3">
-                      <div>
-                        <h5 className="font-semibold text-slate-800 border-b border-slate-200 pb-1">Summary</h5>
-                        <p className="text-sm text-slate-600 mt-2">Experienced software developer with 5+ years...</p>
-                      </div>
-                      <div>
-                        <h5 className="font-semibold text-slate-800 border-b border-slate-200 pb-1">Experience</h5>
-                        <div className="mt-2">
-                          <p className="text-sm font-medium text-slate-700">Senior Developer - Tech Corp</p>
-                          <p className="text-xs text-slate-500">2021 - Present</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Card>
-          </div>
         </div>
       </section>
 
@@ -277,43 +192,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-slate-900 mb-4">Success Stories</h2>
-            <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-              See how Replit 2.0 helped professionals land their dream jobs.
-            </p>
-          </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <Card key={index} className="p-8">
-                <div className="flex items-center mb-4">
-                  <div className="flex text-yellow-400 text-lg">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="h-4 w-4 fill-current" />
-                    ))}
-                  </div>
-                </div>
-                <p className="text-slate-700 mb-6 italic">"{testimonial.content}"</p>
-                <div className="flex items-center">
-                  <img 
-                    src={testimonial.avatar} 
-                    alt={testimonial.author}
-                    className="w-12 h-12 rounded-full mr-4 object-cover"
-                  />
-                  <div>
-                    <p className="font-semibold text-slate-900">{testimonial.author}</p>
-                    <p className="text-sm text-slate-600">{testimonial.role}</p>
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-br from-primary to-purple-600 text-white">
