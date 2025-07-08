@@ -11,6 +11,13 @@ import {
 } from 'lucide-react';
 
 export default function LandingPage() {
+  // Debug log to ensure component is loading
+  console.log('LandingPage component loaded');
+  
+  const handleTestClick = () => {
+    console.log('Test button clicked!');
+    alert('Interface is working! You can interact with the application.');
+  };
   const features = [
     {
       icon: Brain,
@@ -104,7 +111,7 @@ export default function LandingPage() {
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               <Link href="/builder">
-                <Button size="lg" className="accent-primary text-white hover:opacity-90 text-lg px-8 py-4 border-0">
+                <Button size="lg" className="bg-primary text-white hover:bg-primary/90 text-lg px-8 py-4 border-0">
                   <Rocket className="mr-2 h-5 w-5" />
                   Start Building Now
                 </Button>
@@ -115,6 +122,15 @@ export default function LandingPage() {
                   Upload Existing Resume
                 </Button>
               </Link>
+              <Button 
+                onClick={handleTestClick}
+                size="lg" 
+                variant="secondary" 
+                className="text-lg px-8 py-4 border-2 border-secondary text-secondary hover:bg-secondary/10"
+              >
+                <CheckCircle className="mr-2 h-5 w-5" />
+                Test Interface
+              </Button>
             </div>
 
             <div className="flex items-center justify-center space-x-8 text-sm text-slate-500">

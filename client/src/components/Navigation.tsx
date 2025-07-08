@@ -8,6 +8,9 @@ import { Logo } from '@/components/ui/logo';
 export default function Navigation() {
   const [location] = useLocation();
   const [isOpen, setIsOpen] = useState(false);
+  
+  // Debug log
+  console.log('Navigation rendered for location:', location);
 
   const navItems = [
     { href: '/', label: 'Home' },
