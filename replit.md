@@ -6,22 +6,24 @@ Replit 2.0 is a full-stack SaaS platform that helps users create and optimize re
 
 ## System Architecture
 
-### Frontend Architecture
+### Frontend Architecture (/client)
 - **Framework**: React 18 with TypeScript
 - **Styling**: Tailwind CSS with shadcn/ui component library
 - **Routing**: Wouter (lightweight React router)
 - **State Management**: TanStack Query (React Query) for server state
 - **Form Handling**: React Hook Form with Zod validation
 - **Build Tool**: Vite for fast development and optimized builds
+- **Environment**: Uses VITE_API_URL for flexible API configuration
 
-### Backend Architecture
+### Backend Architecture (/server)
 - **Runtime**: Node.js with Express.js framework
 - **Language**: TypeScript with ES modules
 - **Storage**: In-memory storage (MemStorage) for MVP
 - **AI Integration**: Anthropic Claude API (claude-sonnet-4-20250514 model)
 - **File Processing**: Support for PDF and DOCX file uploads with text extraction
 - **PDF Generation**: Puppeteer for server-side PDF creation
-- **Server**: Simplified Express setup with CORS and static file serving
+- **CORS**: Standard cors package implementation
+- **Static Serving**: Production-ready static file serving for deployment
 
 ## Key Components
 
@@ -122,6 +124,7 @@ Changelog:
 - July 08, 2025. Updated Vercel deployment configuration for client/server structure - modified vercel.json to properly handle /client (frontend) and /server (backend) directories, updated API routes to point to server/index.ts, configured static build for client/index.html, ensuring proper separation of frontend and backend for serverless deployment
 - July 08, 2025. Restructured repository for proper client/server separation - created separate package.json files for client and server directories, moved frontend config files to client/, updated vercel.json to build from client directory, configured proper dependency management with frontend dependencies in client/package.json and backend dependencies in server/package.json
 - July 08, 2025. Simplified Vercel configuration to frontend-only deployment - updated vercel.json to only build static site from client directory, removed backend serverless functions, streamlined routing to serve all requests from client build output
+- July 08, 2025. Completed final restructuring and deployment preparation - replaced custom CORS implementation with standard cors package, updated all frontend fetch calls to use VITE_API_URL environment variable, fixed Tailwind CSS configuration issues, simplified server structure following clean architecture patterns, confirmed React application rendering and hot reloading functionality working correctly
 
 ## User Preferences
 
