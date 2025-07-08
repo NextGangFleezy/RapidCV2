@@ -1,7 +1,7 @@
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
-import routes from "../server/routes";
+import routes from "../server/routes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -30,7 +30,7 @@ app.use(routes);
 
 // Serve static files in production
 if (process.env.NODE_ENV === "production") {
-  const distPath = path.resolve(__dirname, "..", "dist", "public");
+  const distPath = path.resolve(__dirname, "..", "client", "dist");
   app.use(express.static(distPath));
   
   app.get("*", (req, res) => {
