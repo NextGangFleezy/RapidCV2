@@ -1,7 +1,7 @@
 import multer from 'multer';
 import pdfParse from 'pdf-parse';
 import mammoth from 'mammoth';
-import type { UploadedFile } from '@shared/schema';
+import type { UploadedFile } from '../../shared/schema';
 
 // Configure multer for memory storage
 export const upload = multer({

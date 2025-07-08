@@ -1,5 +1,5 @@
 import puppeteer from 'puppeteer';
-import type { ResumeData } from '@shared/schema';
+import type { ResumeData } from '../../shared/schema';
 
 export async function generatePDF(resumeData: ResumeData, template: string = 'modern'): Promise<Buffer> {
   let browser;

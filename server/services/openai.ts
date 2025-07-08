@@ -1,5 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk';
-import type { ResumeData, JobAnalysis, WorkExperience } from '@shared/schema';
+import type { ResumeData, JobAnalysis, WorkExperience } from '../../shared/schema';
 
 /*
 The newest Anthropic model is "claude-sonnet-4-20250514", not "claude-3-7-sonnet-20250219", "claude-3-5-sonnet-20241022" nor "claude-3-sonnet-20240229". 

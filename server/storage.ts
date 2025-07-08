@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid';
-import type { Resume, JobAnalysisRecord, InsertResume, InsertJobAnalysis, ResumeData } from '@shared/schema';
+import type { Resume, JobAnalysisRecord, InsertResume, InsertJobAnalysis, ResumeData } from '../shared/schema';
 
 export interface IStorage {
   // Resume operations
