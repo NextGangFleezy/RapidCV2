@@ -9,7 +9,7 @@ import NotFound from '@/pages/not-found';
 
 function App() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen" style={{ backgroundColor: '#f8fafc', fontFamily: 'system-ui, sans-serif' }}>
       <Navigation />
       <Switch>
         <Route path="/" component={LandingPage} />
