@@ -142,7 +142,7 @@ export default function JobTailoring() {
     
     try {
       // Update the resume template immediately
-      const response = await fetch(`/api/resumes/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/resumes/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ template: templateId })

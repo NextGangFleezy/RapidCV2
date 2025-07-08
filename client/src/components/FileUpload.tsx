@@ -79,7 +79,7 @@ export default function FileUpload({ onFileProcessed, onError }: FileUploadProps
         setProgress(prev => Math.min(prev + 10, 80));
       }, 200);
 
-      const response = await fetch('/api/upload-resume', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/upload-resume`, {
         method: 'POST',
         body: formData,
       });
