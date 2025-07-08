@@ -1,4 +1,4 @@
-// Frontend-only types (no backend dependencies)
+// Frontend-only types - no database dependencies
 import { z } from 'zod';
 
 export interface PersonalInfo {
@@ -117,7 +117,7 @@ export const educationSchema = z.object({
 export const projectSchema = z.object({
   id: z.string(),
   name: z.string().min(1, 'Project name is required'),
-  description: z.string().min(1, 'Project description is required'),
+  description: z.string().min(1, 'Description is required'),
   technologies: z.array(z.string()).default([]),
   url: z.string().url().optional().or(z.literal('')),
   github: z.string().url().optional().or(z.literal('')),
@@ -136,15 +136,14 @@ export const resumeDataSchema = z.object({
 });
 
 export const jobDescriptionSchema = z.object({
-  description: z.string().min(1, 'Job description is required'),
-  resumeId: z.string().min(1, 'Resume ID is required')
+  description: z.string().min(10, 'Job description must be at least 10 characters')
 });
 
 export const fileUploadSchema = z.object({
-  file: z.any().refine((file) => file instanceof File, 'Please select a file')
+  file: z.any()
 });
 
-// Resume database types (for API responses)
+// Database record types for API responses
 export interface Resume {
   id: string;
   userId?: string;
