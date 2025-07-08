@@ -71,9 +71,11 @@ app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
 
 // Start server
 async function startServer() {
-  const port = 5000;
-  const server = app.listen(port, "0.0.0.0", () => {
-    console.log(`Server running on port ${port}`);
+  const port = process.env.PORT || 5000;
+  const host = process.env.HOST || "0.0.0.0";
+  
+  const server = app.listen(port, host, () => {
+    console.log(`Server running on ${host}:${port}`);
     console.log(`Frontend available at: http://localhost:${port}`);
   });
 
