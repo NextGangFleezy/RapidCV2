@@ -127,6 +127,7 @@ app.get('/api/health', (req, res) => {
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`\n✅ Development server running on port ${PORT}`);
   console.log(`   Local: http://localhost:${PORT}`);
+  console.log(`   Network: http://0.0.0.0:${PORT}`);
   console.log(`   API: http://localhost:${PORT}/api/health`);
   console.log(`\n   Ready for Vercel deployment!`);
 });
