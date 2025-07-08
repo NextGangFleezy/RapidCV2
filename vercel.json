@@ -2,28 +2,28 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/index.ts",
+      "src": "backend/index.ts",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/api/index.ts"
+      "dest": "/backend/index.ts"
     },
     {
       "src": "/(.*)",
-      "dest": "/api/index.ts"
+      "dest": "/frontend/dist/$1"
     }
   ],
   "env": {
     "NODE_ENV": "production"
   },
   "functions": {
-    "api/index.ts": {
+    "backend/index.ts": {
       "maxDuration": 30
     }
   },
   "installCommand": "npm install",
-  "buildCommand": "cd client && npx vite build --outDir ../dist/public && cd .. && npx esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist"
+  "buildCommand": "cd frontend && npm install && npm run build && cd ../backend && npm install && npm run build"
 }
