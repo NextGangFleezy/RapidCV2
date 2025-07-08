@@ -251,70 +251,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* AI Demo Section */}
-      <section className="py-20 bg-slate-900 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">See AI Tailoring in Action</h2>
-            <p className="text-xl text-slate-300 max-w-3xl mx-auto">
-              Paste a job description and watch how our AI optimizes your resume for maximum impact.
-            </p>
-          </div>
 
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h3 className="text-2xl font-bold mb-6">1. Paste Job Description</h3>
-              <Card className="bg-slate-800 border-slate-700">
-                <CardContent className="p-6">
-                  <label className="block text-sm font-medium text-slate-300 mb-3">Job Description</label>
-                  <textarea 
-                    className="w-full h-40 bg-slate-700 border border-slate-600 rounded-lg px-4 py-3 text-white placeholder-slate-400 resize-none" 
-                    placeholder="We are looking for a Senior Software Engineer with expertise in React, Node.js, and cloud technologies. The ideal candidate will have 5+ years of experience building scalable web applications..."
-                    readOnly
-                  />
-                  <Button className="mt-4 w-full bg-primary hover:bg-primary/90">
-                    <Zap className="mr-2 h-4 w-4" />
-                    Analyze & Tailor Resume
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
-
-            <div>
-              <h3 className="text-2xl font-bold mb-6">2. AI Optimization Results</h3>
-              <div className="space-y-4">
-                <Card className="bg-slate-800 border-slate-700">
-                  <CardContent className="p-6">
-                    <h4 className="font-semibold text-green-400 mb-3">
-                      <CheckCircle className="inline mr-2 h-4 w-4" />
-                      Skills Matched (8/10)
-                    </h4>
-                    <div className="flex flex-wrap gap-2">
-                      <Badge variant="secondary" className="bg-green-900 text-green-300">React</Badge>
-                      <Badge variant="secondary" className="bg-green-900 text-green-300">Node.js</Badge>
-                      <Badge variant="secondary" className="bg-green-900 text-green-300">JavaScript</Badge>
-                      <Badge variant="secondary" className="bg-yellow-900 text-yellow-300">AWS</Badge>
-                      <Badge variant="secondary" className="bg-red-900 text-red-300">Docker</Badge>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="bg-slate-800 border-slate-700">
-                  <CardContent className="p-6">
-                    <h4 className="font-semibold text-blue-400 mb-3">
-                      <Brain className="inline mr-2 h-4 w-4" />
-                      AI-Enhanced Summary
-                    </h4>
-                    <p className="text-slate-300 text-sm">
-                      "Senior Software Engineer with 6+ years building scalable web applications using React and Node.js. Proven expertise in cloud technologies and modern development practices..."
-                    </p>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* How It Works Section */}
       <section className="py-20 bg-slate-50">
