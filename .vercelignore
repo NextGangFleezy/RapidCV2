@@ -1,7 +1,3 @@
-client/
-server/
-shared/
-api/
 node_modules/
 .git/
 *.log
@@ -14,3 +10,12 @@ coverage/
 .cache/
 *.tgz
 *.tar.gz
+backend/
+DEPLOYMENT-STRUCTURE.md
+deployment-*.md
+build-test.js
+deployment-verification.js
+test_*.docx
+test_*.pdf
+test_*.txt
+attached_assets/

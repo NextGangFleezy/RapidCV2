@@ -1,0 +1,17 @@
+{
+  "name": "rapidcv-api",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.30.1",
+    "@vercel/node": "^3.0.0",
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "multer": "^1.4.5-lts.1",
+    "pdf-parse": "^1.1.1",
+    "mammoth": "^1.6.0",
+    "puppeteer": "^21.7.0",
+    "docx": "^8.2.2",
+    "nanoid": "^5.0.4"
+  }
+}
